@@ -8,6 +8,9 @@ import { useState } from "react";
 import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/Constant";
 import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "@/redux/authslice";
+import { Loader2 } from "lucide-react";
 
 const Signup = () => {
   const [input, setInput] = useState({
@@ -19,6 +22,10 @@ const Signup = () => {
     file: "",
   });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const loading = useSelector((state) => state.auth.loading);
+
 
   const changeEventhandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -39,6 +46,7 @@ const Signup = () => {
       formData.append("file", input.file);
     }
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -52,6 +60,9 @@ const Signup = () => {
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+    }
+    finally{
+       dispatch(setLoading(false));
     }
 
     // setInput({ ...input, file: e.target.files?.[0] });
@@ -141,9 +152,18 @@ const Signup = () => {
               />
             </div>
           </div>
-          <Button type="submit" className="w-full my-4 bg-[#00B34A]">
-            signup
-          </Button>
+          {loading ? (
+            <Button className="w-full my-4 bg-[#00B34A]">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait
+            </Button>
+          ) : (
+            <Button type="submit" className="w-full my-4 bg-[#00B34A]">
+              signup
+            </Button>
+          )}
+          {/* <Button type="submit" className="w-full my-4 bg-[#00B34A]">
+           
+          </Button> */}
           <span className="text-sm">
             already have an account?{" "}
             <Link to="/login" className="text-[#00B34A]">

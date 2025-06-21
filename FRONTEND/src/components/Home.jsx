@@ -5,6 +5,13 @@ const Home = () => {
   return (
     <div>
       <Navbar />
+      <HeroSection/>
+      {/* <Slider/>
+      <LatestJobs/>
+      <BrowseByCategory/>
+      <Review/>
+      <NewsAndBlog/>
+      <Footer/> */}
     </div>
   );
 };

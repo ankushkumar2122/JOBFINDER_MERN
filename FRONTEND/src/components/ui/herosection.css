@@ -1,0 +1,10 @@
+.herosection{
+  background-image: url('/assets/hero-bg.jpg'); /* relative to public/ folder */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

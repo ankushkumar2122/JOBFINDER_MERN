@@ -10,6 +10,10 @@ import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setLoading } from "@/redux/authslice";
+import { Loader2 } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -18,6 +22,9 @@ const Login = () => {
     role: "",
   });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
+
   const changeeventhandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
@@ -26,6 +33,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
+      dispatch(setLoading(true)); // Set loading state to true
       const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
         headers: {
           "Content-Type": "application/json",
@@ -39,6 +47,8 @@ const Login = () => {
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoading(false)); // Set loading state to false
     }
 
     // setInput({ ...input, file: e.target.files?.[0] });
@@ -100,9 +110,16 @@ const Login = () => {
               </div>
             </RadioGroup>
           </div>
-          <Button type="submit" className="w-full my-4 bg-[#00B34A]">
-            Login
-          </Button>
+          {loading ? (
+            <Button className="w-full my-4 bg-[#00B34A]">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait
+            </Button>
+          ) : (
+            <Button type="submit" className="w-full my-4 bg-[#00B34A]">
+              Login
+            </Button>
+          )}
+
           <span className="text-sm">
             don't have an account?{" "}
             <Link to="/signup" className="text-[#00B34A]">
