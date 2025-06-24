@@ -4,7 +4,7 @@ import {
   PopoverTrigger,
 } from "@radix-ui/react-popover";
 import { createBrowserRouter, Link } from "react-router-dom";
-import { LogIn, LogOut, User2 } from "lucide-react";
+import { Briefcase, LogIn, LogOut, User2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import Login from "../auth/Login";
