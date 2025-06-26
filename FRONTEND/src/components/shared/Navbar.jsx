@@ -18,15 +18,45 @@ const Navbar = () => {
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
         <div>
           <h1 className="text-2xl font-bold  text-white">
-            JOB <span className="text-[#00B34A]">FINDER</span>
+            <a href="/">
+              JOB <span className="text-[#00B34A]">FINDER</span>
+            </a>
           </h1>
         </div>
         <div className="flex items-center gap-12">
-          <ul className="text-white flex font-medium items-center gap-5">
-            <li>Home</li>
-            <li>Jobs</li>
-            <li>About Us</li>
-            <li>Contact Us</li>
+          <ul className="text-white flex font-medium items-center gap-5  ">
+            <li>
+              <a
+                href="/"
+                className="hover:text-green-400 transition duration-200"
+              >
+                Home
+              </a>
+            </li>
+            <li>
+              <a
+                href="/jobs"
+                className="hover:text-green-400 transition duration-200"
+              >
+                Jobs
+              </a>
+            </li>
+            <li>
+              <a
+                href="/about"
+                className="hover:text-green-400 transition duration-200"
+              >
+                About Us
+              </a>
+            </li>
+            <li>
+              <a
+                href="/contact"
+                className="hover:text-green-400 transition duration-200"
+              >
+                Contact Us
+              </a>
+            </li>
           </ul>
         </div>
         {!user ? (
@@ -88,21 +118,3 @@ const Navbar = () => {
   );
 };
 export default Navbar;
-
-{
-  /* <nav class="bg-gradient-to-r from-[#0B7B3E] to-[#036937] text-white py-4 shadow-md">
-  <div class="container mx-auto px-4 flex items-center justify-between">
-    <div class="text-2xl font-bold">JOB FINDER</div>
-    <ul class="hidden md:flex space-x-8 text-white font-medium">
-      <li><a href="#" class="hover:text-gray-200">Home</a></li>
-      <li><a href="#" class="hover:text-gray-200">Jobs</a></li>
-      <li><a href="#" class="hover:text-gray-200">About Us</a></li>
-      <li><a href="#" class="hover:text-gray-200">Contact Us</a></li>
-    </ul>
-    <div class="flex space-x-4">
-      <button class="border border-white rounded-lg px-4 py-1 hover:bg-white hover:text-green-800 transition">Login</button>
-      <button class="bg-white text-green-800 rounded-lg px-4 py-1 font-semibold hover:bg-green-100 transition">Register</button>
-    </div>
-  </div>
-</nav> */
-}

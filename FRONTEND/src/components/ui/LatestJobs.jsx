@@ -5,7 +5,7 @@ import { LatestJobCard } from "./LatestJobCard";
 
 const LatestJobs = () => {
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto mt-10">
       <h1 className="font-bold text-3xl">Recent Jobs Available</h1>
       <LatestJobCard />
     </div>
