@@ -7,6 +7,8 @@ import Home from "./components/Home";
 import Jobs from "./components/ui/Jobs";
 import About from "./components/ui/About";
 import Contact from "./components/ui/Contact";
+import Browse from "./components/ui/Browse";
+import Profile from "./components/ui/Profile";
 
 
 function App() {
@@ -28,12 +30,20 @@ function App() {
       element: <Jobs />,
     },
     {
+      path: "/browse",
+      element: <Browse />,
+    },
+    {
       path: "/about",
       element: <About />,
     },
     {
       path: "/contact",
       element: <Contact />,
+    },
+    {
+      path: "/profile",
+      element: <Profile />,
     },
   ]);
 

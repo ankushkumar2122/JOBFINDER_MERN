@@ -4,7 +4,7 @@ import Footer from "../shared/Footer";
 import Filtercard from "./Filtercard";
 import Job from "./Job";
 
-const JobArray = [1, 2, 3];
+const JobArray = [1, 2, 3,4];
 const Jobs = () => {
   return (
     <div>
