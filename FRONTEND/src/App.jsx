@@ -9,6 +9,7 @@ import About from "./components/ui/About";
 import Contact from "./components/ui/Contact";
 import Browse from "./components/ui/Browse";
 import Profile from "./components/ui/Profile";
+import JobDescription from "./components/ui/JobDescription";
 
 
 function App() {
@@ -28,6 +29,10 @@ function App() {
     {
       path: "/jobs",
       element: <Jobs />,
+    },
+    {
+      path: "/description/:id",
+      element: <JobDescription />,
     },
     {
       path: "/browse",

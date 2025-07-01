@@ -3,8 +3,11 @@ import { Badge } from "@/components/ui/badge";
 import { Bookmark } from "lucide-react";
 import React from "react";
 import { Avatar, AvatarImage } from "./avatar";
+import { useNavigate } from "react-router-dom";
 
 const Job = () => {
+  const navigate=useNavigate();
+  const JobId="asdc"
   return (
     <div className="p-5 mt-4 rounded-md  shadow-xl bg-white border border-gray-100 cursor-pointer">
       <Badge className="text-green-700 bg-green-100" variant="ghost">
@@ -31,7 +34,7 @@ const Job = () => {
         <p className="text-sm text-gray-600">description</p>
       </div>
       <div className="text-right ">
-        <button className=" text-white bg-[#00B34A]  px-4 py-2 rounded">
+        <button onClick={()=> navigate(`/description/${JobId}`)} className=" text-white bg-[#00B34A]  px-4 py-2 rounded">
           Job Details
         </button>
         <button className=" text-white bg-[#00B34A]  px-4 py-2 rounded">
