@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, AvatarImage } from "./avatar";
 import Navbar from "../shared/Navbar";
 import { Button } from "./button";
@@ -6,10 +6,13 @@ import { Contact, Mail, Pen } from "lucide-react";
 import { Badge } from "./badge";
 import { Label } from "@radix-ui/react-label";
 import AppliedJobTable from "./AppliedJobTable";
+import UpdateProfileDialog from "./UpdateProfileDialog";
 
 const skills = ["HTML", "CSS", "REACT", "MONGODB", "NODE JS", "EXPRESS"];
-function Profile() {
   const isResume = true;
+function Profile() {
+  const [open,setOpen]=useState(false);
+
   return (
     <div>
       <Navbar />
@@ -25,7 +28,7 @@ function Profile() {
               <p>FullStack Devloper</p>
             </div>
           </div>
-          <Button className="text-right " variant="outline">
+          <Button onClick={()=>setOpen(true)} className="text-right " variant="outline">
             <Pen />
           </Button>
         </div>
@@ -70,6 +73,7 @@ function Profile() {
           {/* Apllication table */}
           <AppliedJobTable/>
         </div>
+        <UpdateProfileDialog open={open} setOpen={setOpen} />
     </div>
   );
 }

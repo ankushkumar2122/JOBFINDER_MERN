@@ -133,9 +133,11 @@ import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const user = true;
+  
   const [menuOpen, setMenuOpen] = useState(false);
-  const { User } = useSelector((store) => store.auth);
+ const { User } = useSelector((store) => store.auth);
+const user = true; 
+
   return (
     <div className="bg-black">
       <div className="flex items-center justify-between mx-auto max-w-7xl px-4 h-16">
