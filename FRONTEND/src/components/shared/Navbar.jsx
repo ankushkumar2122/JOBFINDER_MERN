@@ -135,8 +135,9 @@ import { useSelector } from "react-redux";
 const Navbar = () => {
   
   const [menuOpen, setMenuOpen] = useState(false);
- const { User } = useSelector((store) => store.auth);
-const user = true; 
+const { User } = useSelector((store) => store.auth);
+const user = User;
+
 
   return (
     <div className="bg-black">

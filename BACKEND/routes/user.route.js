@@ -9,6 +9,7 @@ router.post("/register",singleUpload, register);
 router.post("/login", login);
 router.get("/logout", logout);
 // Change POST to PUT for updating profile
-router.put("/profile/update", IsAuthenticated, updateprofile);
+router.post("/profile/update", IsAuthenticated, singleUpload, updateprofile);
+
 
 module.exports = router;

@@ -1,6 +1,8 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
+const { default: getDataUri } = require("../utils/DataUri");
+const { default: cloudinary } = require("../utils/cloudinary");
 
 //register user in wesite
 const register = async (req, res) => {
@@ -116,11 +118,20 @@ const logout = (req, res) => {
 const updateprofile = async (req, res) => {
   try {
     const { fullname, email, phonenumber, bio, skills } = req.body;
-    const file = req.file; // Handle file (if uploaded)
-
+    console.log(fullname, email, phonenumber, bio, skills);
+    const file = req.file;
+    //cloudinary
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content); //response from cloudinary
     // Convert skills to array if provided
-    let skillsArray = skills ? skills.split(",") : [];
-
+    let skillsArray = [];
+    if (skills) {
+      try {
+        skillsArray = JSON.parse(skills);
+      } catch (e) {
+        return res.status(400).json({ message: "Invalid skills format", success: false });
+      }
+    }
     const userId = req.id;
     // Authentication middleware should set user ID
     let user = await User.findById(userId);
@@ -143,9 +154,10 @@ const updateprofile = async (req, res) => {
     if (skills) user.profile.skills = skillsArray;
 
     // Handle file upload (if file exists)
-    if (file) {
+    if (cloudResponse) {
       // Example: If you're uploading a resume
-      user.profile.resume = file.path; // Assuming 'path' is where the file is stored
+      user.profile.resume = cloudResponse.secure_url; // save the cloudanary url
+      user.profile.resumeOriginalName = file.originalname; // save the original file name
     }
 
     // Save the updated user
