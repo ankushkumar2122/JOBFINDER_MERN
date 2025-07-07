@@ -27,9 +27,9 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     email: user?.email,
     phonenumber: user?.phonenumber,
     bio: user?.profile?.bio,
-   skills: user?.profile?.skills?.join(", ") || "",
+    skills: user?.profile?.skills?.join(", ") || "",
 
-    file: user?.profile?.resume,
+    file: null,
   });
   const dispatch = useDispatch();
 
@@ -46,8 +46,16 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 
   const fileChangeHandler = (e) => {
     const file = e.target.files?.[0];
-    setInput({ ...input, file });
+
+    if (file) {
+      if (file.type !== "application/pdf") {
+        toast.error("Only PDF files are allowed!");
+        return;
+      }
+      setInput({ ...input, file });
+    }
   };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -61,6 +69,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
       formData.append("file", input.file);
     }
     try {
+      setLoading(true);
       const res = await axios.post(
         `${USER_API_END_POINT}/profile/update`,
         formData,
@@ -78,6 +87,8 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
     setOpen(false);
   };
@@ -150,7 +161,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                   id="skills"
                   name="skills"
                   onChange={changeEventHandler}
-                  value={input.skills.join(", ")} // array to comma-separated string
+                  value={input.skills}
                   className="col-span-3"
                 />
               </div>
@@ -158,7 +169,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                 <Label htmlFor="file" className="text-right">
                   Resume
                 </Label>
-                <Input
+                <input
                   id="file"
                   name="file"
                   type="file"

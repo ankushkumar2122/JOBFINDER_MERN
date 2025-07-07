@@ -126,19 +126,37 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Briefcase, LogOut, Menu, User2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
+import axios from "axios";
+import { USER_API_END_POINT } from "@/utils/Constant";
+import { SetUser } from "@/redux/authslice";
 
 const Navbar = () => {
-  
   const [menuOpen, setMenuOpen] = useState(false);
-const { User } = useSelector((store) => store.auth);
-const user = User;
-
-
+  const { User } = useSelector((store) => store.auth);
+  const user = User;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const logoutHandler = async () => {
+    try {
+      const res = await axios.get(`${USER_API_END_POINT}/logout`, {
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        dispatch(SetUser(null));
+        navigate("/");
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
+  };
   return (
     <div className="bg-black">
       <div className="flex items-center justify-between mx-auto max-w-7xl px-4 h-16">
@@ -162,29 +180,29 @@ const user = User;
         <div className="hidden md:flex items-center gap-12">
           <ul className="text-white flex font-medium items-center gap-5">
             <li>
-              <a href="/" className="hover:text-green-400">
+              <Link to="/" className="hover:text-green-400">
                 Home
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/jobs" className="hover:text-green-400">
+              <Link to="/jobs" className="hover:text-green-400">
                 Jobs
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/browse" className="hover:text-green-400">
+              <Link to="/browse" className="hover:text-green-400">
                 Browse
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/about" className="hover:text-green-400">
+              <Link to="/about" className="hover:text-green-400">
                 About Us
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/contact" className="hover:text-green-400">
+              <Link to="/contact" className="hover:text-green-400">
                 Contact Us
-              </a>
+              </Link>
             </li>
           </ul>
           {!user ? (
@@ -206,7 +224,7 @@ const user = User;
               <PopoverTrigger asChild>
                 <Avatar className="w-10 h-10 cursor-pointer">
                   <AvatarImage
-                    src="./assets/Ankush.jpg"
+                    src={user?.profile?.profilePhoto}
                     alt="@shadcn"
                     className="rounded-full object-cover"
                   />
@@ -220,14 +238,16 @@ const user = User;
                 <div className="flex items-center gap-3">
                   <Avatar className="w-9 h-9">
                     <AvatarImage
-                      src="./assets/Ankush.jpg"
+                      src={user?.profile?.profilePhoto}
                       alt="@shadcn"
                       className="rounded-full object-cover"
                     />
                   </Avatar>
                   <div>
-                    <h4 className="font-semibold">Ankush Kumar</h4>
-                    <p className="text-sm text-gray-600">FullStack Devloper</p>
+                    <h4 className="font-semibold">{user?.fullname}</h4>
+                    <p className="text-sm text-gray-600">
+                      {user?.profile?.bio}
+                    </p>
                   </div>
                 </div>
 
@@ -235,12 +255,16 @@ const user = User;
                   <div className="flex items-center gap-2">
                     <User2 className="w-4 h-4" />
                     <Button variant="link" className="p-0 text-black">
-                   <Link to="/profile" >  View Profile</Link> 
+                      <Link to="/profile"> View Profile</Link>
                     </Button>
                   </div>
                   <div className="flex items-center gap-2">
                     <LogOut className="w-4 h-4" />
-                    <Button variant="link" className="p-0 text-black">
+                    <Button
+                      onClick={logoutHandler}
+                      variant="link"
+                      className="p-0 text-black"
+                    >
                       Logout
                     </Button>
                   </div>

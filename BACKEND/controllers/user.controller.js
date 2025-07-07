@@ -16,6 +16,9 @@ const register = async (req, res) => {
         .json({ message: "somthing is mising", success: false });
     }
     console.log("req.body is:", req.body);
+    const file = req.file;
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
     const user = await User.findOne({ email }); //check karega ki email pahala se exist to nahi kar raha
     if (user) {
@@ -30,6 +33,9 @@ const register = async (req, res) => {
       phonenumber,
       password: hashedPassword,
       role,
+      profile: {
+        profilePhoto: cloudResponse.secure_url,
+      },
     });
     console.log("req.body is:", req.body);
 
@@ -118,18 +124,40 @@ const logout = (req, res) => {
 const updateprofile = async (req, res) => {
   try {
     const { fullname, email, phonenumber, bio, skills } = req.body;
-    console.log(fullname, email, phonenumber, bio, skills);
+    // console.log(fullname, email, phonenumber, bio, skills);
+    // const file = req.file;
+    //
+    // const fileUri = getDataUri(file);
+    // const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    //
+
+    // const file = req.file;
+    // //cloudinary
+    // let cloudResponse = null;
+
+    // if (file) {
+    //   const fileUri = getDataUri(file);
+    //   cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+    //     resource_type: "auto",
+    //     format: "pdf",
+    //   });
+    //   //response from cloudinary
+    // }
+
     const file = req.file;
-    //cloudinary
     const fileUri = getDataUri(file);
-    const cloudResponse = await cloudinary.uploader.upload(fileUri.content); //response from cloudinary
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    // console.log("Cloudinary resume URL:", cloudResponse.secure_url);
+
     // Convert skills to array if provided
     let skillsArray = [];
     if (skills) {
       try {
         skillsArray = JSON.parse(skills);
       } catch (e) {
-        return res.status(400).json({ message: "Invalid skills format", success: false });
+        return res
+          .status(400)
+          .json({ message: "Invalid skills format", success: false });
       }
     }
     const userId = req.id;

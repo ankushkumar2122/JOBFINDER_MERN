@@ -14,6 +14,7 @@ const isResume = true;
 function Profile() {
   const [open, setOpen] = useState(false);
   const user = useSelector((store) => store.auth.User);
+  console.log("Resume URL:", user?.profile?.resume);
 
   return (
     <div>
@@ -22,7 +23,7 @@ function Profile() {
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
             <Avatar className="h-24 w-24 ">
-              <AvatarImage src="./assets/Ankush.jpg" alt="profile" />
+              <AvatarImage src={user?.profile?.profilePhoto} alt="profile" />
             </Avatar>
 
             <div className="">
@@ -48,25 +49,25 @@ function Profile() {
             <span>{user?.phonenumber}</span>
           </div>
         </div>
-       <div className="my-5">
-  <h1>Skills</h1>
-  <div className="flex items-center gap-1 flex-wrap">
-    {user?.profile?.skills && user.profile.skills.length > 0 ? (
-      user.profile.skills.map((item, index) => (
-        <Badge key={index}>{item}</Badge>
-      ))
-    ) : (
-      <span>NA</span>
-    )}
-  </div>
-</div>
+        <div className="my-5">
+          <h1>Skills</h1>
+          <div className="flex items-center gap-1 flex-wrap">
+            {user?.profile?.skills && user.profile.skills.length > 0 ? (
+              user.profile.skills.map((item, index) => (
+                <Badge key={index}>{item}</Badge>
+              ))
+            ) : (
+              <span>NA</span>
+            )}
+          </div>
+        </div>
 
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label className="text-md font-bold">Resume</Label>
           {isResume ? (
             <a
+              href={user?.profile?.resume}
               target="_blank"
-              href={User?.profile?.resume}
               className="text-blue-500 hover:underline cursor-pointer"
             >
               {user?.profile?.resumeOriginalName}
