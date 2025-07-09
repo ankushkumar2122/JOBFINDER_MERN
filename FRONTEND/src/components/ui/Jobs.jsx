@@ -3,9 +3,11 @@ import Navbar from "../shared/Navbar";
 import Footer from "../shared/Footer";
 import Filtercard from "./Filtercard";
 import Job from "./Job";
+import { useSelector } from "react-redux";
 
-const JobArray = [1, 2, 3,4];
+// const JobArray = [1, 2, 3,4];
 const Jobs = () => {
+  const {allJobs}=useSelector(store=>store.job)
   return (
     <div>
       <Navbar />
@@ -15,7 +17,7 @@ const Jobs = () => {
             <Filtercard />
           </div>
 
-          {JobArray.length <= 0 ? (
+          {allJobs.length <= 0 ? (
             <span>Job Not Found</span>
           ) : (
             //  <div className="flex-1 pb-5">
@@ -23,9 +25,9 @@ const Jobs = () => {
               {/* overflow auto se scrollbar aya hai */}
 
               <div>
-                {JobArray.map((item, index) => (
-                  <div>
-                    <Job />
+                {allJobs.map((job) => (
+                  <div key={job?._id}>
+                    <Job job={job} />
                   </div>
                 ))}
               </div>

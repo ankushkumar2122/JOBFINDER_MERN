@@ -6,12 +6,13 @@ const {
   getJobId,
   getAdminJobs,
 } = require("../controllers/job.controller");
-const { IsAuthenticated } = require("../Middleware/isAuthenticated");
+const { IsAuthenticated } = require("../Middleware/IsAuthenticated");
+
 
 router.post("/post", IsAuthenticated, postJob);
 router.get("/get", IsAuthenticated, getAllJob);
-router.get("/getadminjobs", IsAuthenticated, getJobId);
+router.get("/getadminjobs", IsAuthenticated, getAdminJobs);
 // Change POST to PUT for updating profile
-router.get("/get/:id", IsAuthenticated, getAdminJobs);
+router.get("/get/:id", IsAuthenticated, getJobId);
 
 module.exports = router;

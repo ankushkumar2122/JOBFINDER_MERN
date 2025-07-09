@@ -12,8 +12,8 @@ const postJob = async (req, res) => {
       salary,
       location,
       jobType,
-      exprience,
-      positon,
+      experience,
+      position,
       companyId,
     } = req.body;
 
@@ -26,8 +26,8 @@ const postJob = async (req, res) => {
       !salary ||
       !location ||
       !jobType ||
-      !exprience ||
-      !positon ||
+      !experience ||
+      !position ||
       !companyId
     ) {
       return res
@@ -42,8 +42,8 @@ const postJob = async (req, res) => {
       salary: Number(salary),
       location,
       jobType,
-      experienceLevel: Number(exprience),
-      position: Number(positon),
+      experienceLevel: Number(experience),
+      position: Number(position),
       company: companyId,
       created_by: userId,
     });

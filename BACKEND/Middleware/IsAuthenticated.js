@@ -13,6 +13,9 @@ const IsAuthenticated = (req, res, next) => {
     // Verify the token using the secret key
     const decode = JWT.verify(token, process.env.SECRET_KEY);
 
+
+    //  console.log("Decoded Token:", token);
+
     // If token verification is successful, add userId to the request object
     req.id = decode.userId;
     next();

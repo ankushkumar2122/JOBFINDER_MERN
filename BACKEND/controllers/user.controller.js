@@ -125,24 +125,7 @@ const updateprofile = async (req, res) => {
   try {
     const { fullname, email, phonenumber, bio, skills } = req.body;
     // console.log(fullname, email, phonenumber, bio, skills);
-    // const file = req.file;
-    //
-    // const fileUri = getDataUri(file);
-    // const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-    //
 
-    // const file = req.file;
-    // //cloudinary
-    // let cloudResponse = null;
-
-    // if (file) {
-    //   const fileUri = getDataUri(file);
-    //   cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
-    //     resource_type: "auto",
-    //     format: "pdf",
-    //   });
-    //   //response from cloudinary
-    // }
 
     const file = req.file;
     const fileUri = getDataUri(file);
