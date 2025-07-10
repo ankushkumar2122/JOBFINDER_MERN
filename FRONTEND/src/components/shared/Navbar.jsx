@@ -179,31 +179,50 @@ const Navbar = () => {
         {/* Links + Auth Buttons (Desktop Only) */}
         <div className="hidden md:flex items-center gap-12">
           <ul className="text-white flex font-medium items-center gap-5">
-            <li>
-              <Link to="/" className="hover:text-green-400">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link to="/jobs" className="hover:text-green-400">
-                Jobs
-              </Link>
-            </li>
-            <li>
-              <Link to="/browse" className="hover:text-green-400">
-                Browse
-              </Link>
-            </li>
-            <li>
-              <Link to="/about" className="hover:text-green-400">
-                About Us
-              </Link>
-            </li>
-            <li>
-              <Link to="/contact" className="hover:text-green-400">
-                Contact Us
-              </Link>
-            </li>
+            {/* condition base link show */}
+            {user && user.role == "recruiter" ? (
+              <>
+                <li>
+                  <Link to="/admin/companies" className="hover:text-green-400">
+                    Companies
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/admin/jobs" className="hover:text-green-400">
+                    Jobs
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                {" "}
+                <li>
+                  <Link to="/" className="hover:text-green-400">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/jobs" className="hover:text-green-400">
+                    Jobs
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/browse" className="hover:text-green-400">
+                    Browse
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/about" className="hover:text-green-400">
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact" className="hover:text-green-400">
+                    Contact Us
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
           {!user ? (
             <div className="flex items-center gap-2">
@@ -252,12 +271,18 @@ const Navbar = () => {
                 </div>
 
                 <div className="mt-4 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <User2 className="w-4 h-4" />
-                    <Button variant="link" className="p-0 text-black">
-                      <Link to="/profile"> View Profile</Link>
-                    </Button>
-                  </div>
+                  {user && user.role === "student" && (
+                    <>
+                      {" "}
+                      <div className="flex items-center gap-2">
+                        <User2 className="w-4 h-4" />
+                        <Button variant="link" className="p-0 text-black">
+                          <Link to="/profile"> View Profile</Link>
+                        </Button>
+                      </div>{" "}
+                    </>
+                  )}
+
                   <div className="flex items-center gap-2">
                     <LogOut className="w-4 h-4" />
                     <Button

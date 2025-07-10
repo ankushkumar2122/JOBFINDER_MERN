@@ -1,6 +1,11 @@
+import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+
 import "./App.css";
 
+// Pages
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 import Home from "./components/Home";
@@ -11,52 +16,44 @@ import Browse from "./components/ui/Browse";
 import Profile from "./components/ui/Profile";
 import JobDescription from "./components/ui/JobDescription";
 
+// Constants & Redux
+import { USER_API_END_POINT } from "./utils/Constant";
+import { SetUser } from "./redux/authslice";
 
 function App() {
+  const dispatch = useDispatch();
+
+  // ✅ Auto fetch user on app load if cookie token exists
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`${USER_API_END_POINT}/me`, {
+          withCredentials: true,
+        });
+        if (res.data.success) {
+          dispatch(SetUser(res.data.user));
+        }
+      } catch (err) {
+        console.log("No active session or error fetching user:", err?.response?.data?.message);
+      }
+    };
+
+    fetchUser();
+  }, [dispatch]);
+
   const appRouter = createBrowserRouter([
-    {
-      path: "/",
-      element: <Home />,
-    },
-    {
-      path: "/login",
-      element: <Login />,
-    },
-    {
-      path: "/signup",
-      element: <Signup />,
-    },
-    {
-      path: "/jobs",
-      element: <Jobs />,
-    },
-    {
-      path: "/description/:id",
-      element: <JobDescription />,
-    },
-    {
-      path: "/browse",
-      element: <Browse />,
-    },
-    {
-      path: "/about",
-      element: <About />,
-    },
-    {
-      path: "/contact",
-      element: <Contact />,
-    },
-    {
-      path: "/profile",
-      element: <Profile />,
-    },
+    { path: "/", element: <Home /> },
+    { path: "/login", element: <Login /> },
+    { path: "/signup", element: <Signup /> },
+    { path: "/jobs", element: <Jobs /> },
+    { path: "/description/:id", element: <JobDescription /> },
+    { path: "/browse", element: <Browse /> },
+    { path: "/about", element: <About /> },
+    { path: "/contact", element: <Contact /> },
+    { path: "/profile", element: <Profile /> },
   ]);
 
-  return (
-    <>
-      <RouterProvider router={appRouter} />
-    </>
-  );
+  return <RouterProvider router={appRouter} />;
 }
 
 export default App;
