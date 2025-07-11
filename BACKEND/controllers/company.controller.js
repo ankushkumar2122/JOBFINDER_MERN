@@ -20,7 +20,7 @@ const registercompany = async (req, res) => {
     });
     return res
       .status(201)
-      .json({ message: "company register successfully", newCompany,success: true });
+      .json({ message: "company register successfully", company: newCompany,success: true });
   } catch (error) {
     console.log(error);
   }

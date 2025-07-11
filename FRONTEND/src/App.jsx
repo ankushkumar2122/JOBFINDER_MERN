@@ -15,10 +15,13 @@ import Contact from "./components/ui/Contact";
 import Browse from "./components/ui/Browse";
 import Profile from "./components/ui/Profile";
 import JobDescription from "./components/ui/JobDescription";
+import Companies from "./components/admin/Companies";
 
 // Constants & Redux
 import { USER_API_END_POINT } from "./utils/Constant";
 import { SetUser } from "./redux/authslice";
+import CompanyCreate from "./components/admin/CompanyCreate";
+import CompanySetup from "./components/admin/CompanySetup";
 
 function App() {
   const dispatch = useDispatch();
@@ -34,7 +37,10 @@ function App() {
           dispatch(SetUser(res.data.user));
         }
       } catch (err) {
-        console.log("No active session or error fetching user:", err?.response?.data?.message);
+        console.log(
+          "No active session or error fetching user:",
+          err?.response?.data?.message
+        );
       }
     };
 
@@ -51,6 +57,10 @@ function App() {
     { path: "/about", element: <About /> },
     { path: "/contact", element: <Contact /> },
     { path: "/profile", element: <Profile /> },
+    //adimin ke liya
+    { path: "/admin/companies", element: <Companies /> },
+     { path: "/admin/companies/create", element: <CompanyCreate /> },
+     { path: "/admin/companies/:id", element: <CompanySetup /> },
   ]);
 
   return <RouterProvider router={appRouter} />;

@@ -331,7 +331,7 @@ const Navbar = () => {
                 Login
               </Button>
             </Link>
-            <Link to="/signup" className="w-full">
+            <Link to="/signup" className="w-full text-black">
               <Button
                 className="w-full bg-[#00B34A] text-white hover:bg-[#00B34A]"
                 variant="outline"

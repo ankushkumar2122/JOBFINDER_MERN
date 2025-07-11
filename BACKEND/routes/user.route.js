@@ -8,8 +8,9 @@ const {
   logout,
 } = require("../controllers/user.controller");
 
-const { IsAuthenticated } = require("../Middleware/isAuthenticated");
-const { singleUpload } = require("../Middleware/multer");
+const { IsAuthenticated } = require("../middleware/isAuthenticated");
+const { singleUpload } = require("../middleware/multer");
+
 const User = require("../models/user.model"); // Add this if not already imported
 
 // Register route
