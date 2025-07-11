@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
+const { IsAuthenticated } = require("../middleware/isAuthenticated");
+// const { singleUpload } = require("../middleware/multer");
 const {
   register,
   login,
@@ -11,6 +12,7 @@ const {
 
 
 const User = require("../models/user.model"); // Add this if not already imported
+const { singleUpload } = require("../Middleware/multer");
 
 
 // Register route
