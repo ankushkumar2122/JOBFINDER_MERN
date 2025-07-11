@@ -9,7 +9,7 @@ const {
 } = require("../controllers/user.controller");
 
 const { IsAuthenticated } = require("../middleware/isAuthenticated");
-const { singleUpload } = require("../middleware/multer");
+const { singleUpload } = require("./middleware/multer");
 
 const User = require("../models/user.model"); // Add this if not already imported
 
