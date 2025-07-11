@@ -7,7 +7,8 @@ const {
   getCompanyById,
   UpdateCompany,
 } = require("../controllers/company.controller");
-const { IsAuthenticated } = require("../Middleware/isAuthenticated");
+const { IsAuthenticated } = require('../middleware/IsAuthenticated');
+
 
 router.post("/register", IsAuthenticated, registercompany);
 router.get("/get", IsAuthenticated, getCompany);

@@ -6,7 +6,8 @@ const {
   getJobId,
   getAdminJobs,
 } = require("../controllers/job.controller");
-const { IsAuthenticated } = require("../Middleware/IsAuthenticated");
+const { IsAuthenticated } = require('../middleware/IsAuthenticated');
+
 
 
 router.post("/post", IsAuthenticated, postJob);

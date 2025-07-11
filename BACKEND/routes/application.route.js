@@ -6,7 +6,8 @@ const {
   getApplicant,
   updatestatus,
 } = require("../controllers/application.controller");
-const { IsAuthenticated } = require("../Middleware/isAuthenticated");
+const { IsAuthenticated } = require('../middleware/IsAuthenticated');
+
 
 router.get("/apply/:id", IsAuthenticated, applyJob);
 router.get("/get", IsAuthenticated, getAppliedJob);
