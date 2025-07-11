@@ -9,10 +9,8 @@ const {
   logout,
 } = require("../controllers/user.controller");
 
-
-
 const User = require("../models/user.model"); // Add this if not already imported
-const { singleUpload } = require("../Middleware/multer");
+const { singleUpload } = require("../middleware/multer");
 
 
 // Register route
