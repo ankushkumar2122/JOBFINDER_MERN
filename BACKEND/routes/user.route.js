@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { IsAuthenticated } = require("../middleware/isAuthenticated");
+const { IsAuthenticated } = require("../middleware/IsAuthenticated");
 // const { singleUpload } = require("../middleware/multer");
 const {
   register,
