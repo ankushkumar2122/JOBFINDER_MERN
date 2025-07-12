@@ -14,6 +14,7 @@ const CompanyCreate = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [companyName, setCompanyName] = useState();
+  const token = localStorage.getItem("token");
   const registerNewCompany = async () => {
     try {
       const res = await axios.post(
@@ -23,7 +24,8 @@ const CompanyCreate = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true,
+           Authorization: `Bearer ${token}`,
+          // withCredentials: true,
         }
       );
       if (res?.data?.success) {
