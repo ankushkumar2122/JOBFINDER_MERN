@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../shared/Navbar";
 import { Button } from "../ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import axios from "axios";
@@ -27,15 +27,15 @@ const CompanySetup = () => {
     const file = e.target.files?.[0];
     setInput({ ...input, file });
   };
-  const submitHandler = async () => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("name".input.name);
-    formData.append("description".input.description);
-    formData.append("website".input.website);
-    formData.append("location".input.location);
+    formData.append("name",input.name);
+    formData.append("description",input.description);
+    formData.append("website",input.website);
+    formData.append("location",input.location);
     if (input.file) {
-      formData.append("file".input.file);
+      formData.append("file",input.file);
     }
 
     try {

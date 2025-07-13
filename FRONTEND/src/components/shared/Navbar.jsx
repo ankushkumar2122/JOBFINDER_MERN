@@ -321,6 +321,7 @@ const Navbar = () => {
             </li>
             <li>
               <a href="/contact" className="hover:text-green-400">
+              <h1 className="">hii</h1>
                 Contact Us
               </a>
             </li>
@@ -328,6 +329,7 @@ const Navbar = () => {
           <div className="pt-4 flex gap-2">
             <Link to="/login" className="w-full">
               <Button className="w-full" variant="outline">
+                
                 Login
               </Button>
             </Link>

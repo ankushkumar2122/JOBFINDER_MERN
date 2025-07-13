@@ -28,7 +28,7 @@ function App() {
 
   // ✅ Auto fetch user on app load if cookie token exists
   useEffect(() => {
-    console.log("✅ BASE_URL:", import.meta.env.VITE_API_BASE_URL);
+    // console.log("✅ BASE_URL:", import.meta.env.VITE_API_BASE_URL);
 
     const fetchUser = async () => {
       try {
