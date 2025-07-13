@@ -155,7 +155,7 @@ const Footer = () => {
                 className="hover:text-green-400 transition duration-200"
               >
                 Terms & Conditions
-                <h1 className="">hii</h1>
+               
               </a>
             </li>
             <li>
