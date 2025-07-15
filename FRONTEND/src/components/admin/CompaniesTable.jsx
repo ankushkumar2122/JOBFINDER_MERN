@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -14,22 +14,38 @@ import { Edit2, MoreHorizontal } from "lucide-react";
 import { useSelector } from "react-redux";
 
 const CompaniesTable = () => {
-  const { companies } = useSelector((store) => store.company);
+  const { companies, searchCompanyByText } = useSelector(
+    (store) => store.company
+  );
+  const [filterCompany, setfilterCompany] = useState(companies);
+  useEffect(() => {
+    const filteredCompany =
+      companies.length >= 0 &&
+      companies.filter((company) => {
+        if (!searchCompanyByText) {
+          return true;
+        }
+        return company?.name
+          ?.toLowerCase()
+          .includes(searchCompanyByText.toLowerCase());
+      });
+    setfilterCompany(filteredCompany);
+  }, [searchCompanyByText, companies]);
   return (
     <div>
-      <Table>
+      <Table >
         <TableCaption>A list of your recent registered companies</TableCaption>
         <TableHeader>
-          <TableRow>
-            <TableHead>Logo</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead className="text-right">Action</TableHead>
+          <TableRow >
+            <TableHead className="text-gray-700">Logo</TableHead>
+            <TableHead className="text-gray-700">Name</TableHead>
+            <TableHead className="text-gray-700">Date</TableHead>
+            <TableHead className="text-right text-gray-700">Action</TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          {companies?.map((company) => (
+          {filterCompany?.map((company) => (
             <tr>
               <TableCell>
                 <Avatar>
