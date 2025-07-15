@@ -12,12 +12,14 @@ import { Avatar, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Edit2, MoreHorizontal } from "lucide-react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const CompaniesTable = () => {
   const { companies, searchCompanyByText } = useSelector(
     (store) => store.company
   );
   const [filterCompany, setfilterCompany] = useState(companies);
+  const navigate = useNavigate();
   useEffect(() => {
     const filteredCompany =
       companies.length >= 0 &&
@@ -33,10 +35,10 @@ const CompaniesTable = () => {
   }, [searchCompanyByText, companies]);
   return (
     <div>
-      <Table >
+      <Table>
         <TableCaption>A list of your recent registered companies</TableCaption>
         <TableHeader>
-          <TableRow >
+          <TableRow>
             <TableHead className="text-gray-700">Logo</TableHead>
             <TableHead className="text-gray-700">Name</TableHead>
             <TableHead className="text-gray-700">Date</TableHead>
@@ -46,7 +48,7 @@ const CompaniesTable = () => {
 
         <TableBody>
           {filterCompany?.map((company) => (
-            <tr>
+           <TableRow key={company._id}>
               <TableCell>
                 <Avatar>
                   <AvatarImage src={company.logo} />
@@ -60,14 +62,19 @@ const CompaniesTable = () => {
                     <MoreHorizontal />
                   </PopoverTrigger>
                   <PopoverContent>
-                    <div className="flex items-center gap-2 w-fit cursor-pointer">
+                    <div
+                      onClick={() =>
+                        navigate(`/admin/companies/${company._id}`)
+                      }
+                      className="flex items-center gap-2 w-fit cursor-pointer"
+                    >
                       <Edit2 className="w-4" />
                       <span>Edit</span>
                     </div>
                   </PopoverContent>
                 </Popover>
-              </TableCell>
-            </tr>
+              </TableCell> 
+            </TableRow>
           ))}
         </TableBody>
       </Table>
