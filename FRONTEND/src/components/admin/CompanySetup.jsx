@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
 import { Button } from "../ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
@@ -8,6 +8,7 @@ import axios from "axios";
 import { COMPANY_API_END_POINT } from "@/utils/Constant";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 const CompanySetup = () => {
   const [input, setInput] = useState({
@@ -17,6 +18,7 @@ const CompanySetup = () => {
     location: "",
     file: null,
   });
+  const { singleCompany } = useSelector((store) => store.company);
   const [loading, setloding] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
@@ -30,12 +32,12 @@ const CompanySetup = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("name",input.name);
-    formData.append("description",input.description);
-    formData.append("website",input.website);
-    formData.append("location",input.location);
+    formData.append("name", input.name);
+    formData.append("description", input.description);
+    formData.append("website", input.website);
+    formData.append("location", input.location);
     if (input.file) {
-      formData.append("file",input.file);
+      formData.append("file", input.file);
     }
 
     try {
@@ -61,13 +63,24 @@ const CompanySetup = () => {
       setloding(false);
     }
   };
+  useEffect(() => {
+    setInput({
+      name: singleCompany.name || "",
+      description: singleCompany.description || "",
+      website: singleCompany.website || "",
+      location: singleCompany.location || "",
+       file: null, 
+    });
+  }, [singleCompany]);
+
   return (
     <div>
       <Navbar />
       <div className="max-w-xl mx-auto my-10">
         <form onSubmit={submitHandler}>
           <div className="flex items-center gap-5 p-8">
-            <Button onClick={()=>navigate("/admin/companies")}
+            <Button
+              onClick={() => navigate("/admin/companies")}
               variant="outline"
               className="flex items-center gap-2 text-gray-500 font-semibold"
             >
@@ -125,7 +138,6 @@ const CompanySetup = () => {
           {/* <Button type="submit" className="w-full mt-8">
             Update
           </Button> */}
-          
 
           {loading ? (
             <Button className="w-full my-4 bg-[#00B34A]">
@@ -133,7 +145,7 @@ const CompanySetup = () => {
             </Button>
           ) : (
             <Button type="submit" className="w-full my-4 bg-[#00B34A]">
-               Update
+              Update
             </Button>
           )}
         </form>

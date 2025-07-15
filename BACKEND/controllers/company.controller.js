@@ -1,4 +1,6 @@
 const Company = require("../models/company.model");
+const { default: getDataUri } = require("../utils/DataUri");
+const { default: cloudinary } = require("../utils/cloudinary");
 
 const registercompany = async (req, res) => {
   try {
@@ -18,9 +20,11 @@ const registercompany = async (req, res) => {
       name: companyName,
       userId: req.id,
     });
-    return res
-      .status(201)
-      .json({ message: "company register successfully", company: newCompany,success: true });
+    return res.status(201).json({
+      message: "company register successfully",
+      company: newCompany,
+      success: true,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -54,13 +58,9 @@ const getCompanyById = async (req, res) => {
   }
 };
 
-
-
 const UpdateCompany = async (req, res) => {
   try {
     const { name, description, website, location } = req.body;
-    const file = req.file;
-    // cloudinary logic can be added here if you want to handle logo uploads
 
     const updateData = {};
     if (name) updateData.name = name;
@@ -68,14 +68,18 @@ const UpdateCompany = async (req, res) => {
     if (website) updateData.website = website;
     if (location) updateData.location = location;
 
-    const company = await Company.findByIdAndUpdate(
-      req.params.id,
-      updateData,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    const file = req.file;
+    // cloudinary logic can be added here if you want to handle logo uploads
+   
+      const fileuri = getDataUri(req.file);
+      const cloudResponse = await cloudinary.uploader.upload(fileuri.content);
+      updateData.logo = cloudResponse.secure_url;
+    
+    // console.log("Final update data:", updateData);
+
+    const company = await Company.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+    });
 
     if (!company) {
       return res.status(404).json({
@@ -97,8 +101,6 @@ const UpdateCompany = async (req, res) => {
     });
   }
 };
-
-
 
 module.exports = {
   registercompany,
