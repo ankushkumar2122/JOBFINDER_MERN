@@ -114,6 +114,7 @@ import { Briefcase, Users, Building2 } from "lucide-react";
 import CompanyLogos from "./CompanyLogos";
 
 const HeroSection = () => {
+ 
   return (
     <div
       className="relative text-white"

@@ -6,6 +6,7 @@ const { default: cloudinary } = require("../utils/cloudinary");
 
 //register user in wesite
 const register = async (req, res) => {
+  const isProduction = process.env.NODE_ENV === "production";
   //user ko register karayaga
   try {
     const { fullname, email, phonenumber, password, role } = req.body;
@@ -97,8 +98,8 @@ const login = async (req, res) => {
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-       secure: true,          // ✅ Needed for HTTPS (Vercel/Render)
-    sameSite: "None",
+        secure: isProduction, // true on prod, false on local
+        sameSite: isProduction ? "None" : "Lax",
       })
       .json({
         message: `Welcome back ${user.fullname}`,
@@ -126,7 +127,6 @@ const updateprofile = async (req, res) => {
   try {
     const { fullname, email, phonenumber, bio, skills } = req.body;
     // console.log(fullname, email, phonenumber, bio, skills);
-
 
     const file = req.file;
     const fileUri = getDataUri(file);

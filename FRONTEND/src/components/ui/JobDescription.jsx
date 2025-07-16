@@ -7,10 +7,13 @@ import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from "@/utils/Constant";
 import { setSingleJob } from "@/redux/JobSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
+import Navbar from "../shared/Navbar";
 
 const JobDescription = () => {
   const { singleJob } = useSelector((store) => store.job);
-  const { user } = useSelector((store) => store.auth);
+ const { User } = useSelector((store) => store.auth);
+   const user = User;
+
 
   const isInitiallyApplied =
     singleJob?.applications?.some(
@@ -22,6 +25,8 @@ const JobDescription = () => {
   const jobid = params.id;
   const dispatch = useDispatch();
   // useGetSingleJob(jobid);//custom hook
+console.log("Job ID:", jobid); // ✅ Check this
+console.log("User ID:", user?._id); // ✅ Check this
 
   const applyJobHandler = async () => {
     //apply function
@@ -47,6 +52,7 @@ const JobDescription = () => {
   };
 
   useEffect(() => {
+    if (!user?._id) return; 
     const fetchSingleJob = async () => {
       try {
         const res = await axios.get(`${JOB_API_END_POINT}/get/${jobid}`, {
@@ -70,7 +76,11 @@ const JobDescription = () => {
   }, [jobid, dispatch, user?._id]);
 
   return (
+    <>
+     <Navbar/>
+  
     <div className="max-w-7xl mx-auto my-10">
+     
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-bold text-xl"> {singleJob?.title}</h1>
@@ -86,6 +96,8 @@ const JobDescription = () => {
             </Badge>
           </div>
         </div>
+
+
         <Button
           onClick={isApplied ? null : applyJobHandler}
           disabled={isApplied}
@@ -97,6 +109,8 @@ const JobDescription = () => {
         >
           {isApplied ? "Already Applied" : "Apply Now"}
         </Button>
+
+        
       </div>
       <h1 className=" border-b-2 border-b-gray-300  font-medium  py-4">
         {singleJob?.description}
@@ -147,6 +161,7 @@ const JobDescription = () => {
         </h1>
       </div>
     </div>
+      </>
   );
 };
 

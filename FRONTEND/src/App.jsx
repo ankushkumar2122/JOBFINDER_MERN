@@ -16,12 +16,14 @@ import Browse from "./components/ui/Browse";
 import Profile from "./components/ui/Profile";
 import JobDescription from "./components/ui/JobDescription";
 import Companies from "./components/admin/Companies";
+import AdminJobs from "./components/admin/AdminJobs";
 
 // Constants & Redux
 import { USER_API_END_POINT } from "./utils/Constant";
 import { SetUser } from "./redux/authslice";
 import CompanyCreate from "./components/admin/CompanyCreate";
 import CompanySetup from "./components/admin/CompanySetup";
+import PostJob from "./components/admin/PostJob";
 
 function App() {
   const dispatch = useDispatch();
@@ -63,6 +65,8 @@ function App() {
     { path: "/admin/companies", element: <Companies /> },
      { path: "/admin/companies/create", element: <CompanyCreate /> },
      { path: "/admin/companies/:id", element: <CompanySetup /> },
+     { path: "/admin/jobs", element: <AdminJobs /> },
+      { path: "/admin/jobs/create", element: <PostJob /> },
   ]);
 
   return <RouterProvider router={appRouter} />;
