@@ -138,8 +138,8 @@ import { SetUser } from "@/redux/authslice";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { User } = useSelector((store) => store.auth);
-  const user = User;
+  const { user } = useSelector((store) => store.auth);
+ 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logoutHandler = async () => {

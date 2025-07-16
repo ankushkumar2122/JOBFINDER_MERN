@@ -41,6 +41,8 @@ const Login = () => {
         withCredentials: true,
       });
       if (res.data.success) {
+        // console.log(res.data.user);
+       
         dispatch(SetUser(res.data.user));
         navigate("/");
         toast.success(res.data.message);
