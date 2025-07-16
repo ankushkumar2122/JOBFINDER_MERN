@@ -6,7 +6,6 @@ const { default: cloudinary } = require("../utils/cloudinary");
 
 //register user in wesite
 const register = async (req, res) => {
-  
   //user ko register karayaga
   try {
     const { fullname, email, phonenumber, password, role } = req.body;
@@ -98,8 +97,8 @@ const login = async (req, res) => {
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-       secure: true,          // ✅ Needed for HTTPS (Vercel/Render)
-    sameSite: "None",
+        secure: true, // ✅ Needed for HTTPS (Vercel/Render)
+        sameSite: "None",
       })
       .json({
         message: `Welcome back ${user.fullname}`,
@@ -116,18 +115,22 @@ const logout = (req, res) => {
   try {
     return res
       .status(200)
-      .cookie("token", "", { maxAge: 0 })
+      .clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      })
       .json({ message: `logout successfully`, success: true });
   } catch (error) {
     console.log(error);
   }
 };
 
+
 const updateprofile = async (req, res) => {
   try {
     const { fullname, email, phonenumber, bio, skills } = req.body;
     // console.log(fullname, email, phonenumber, bio, skills);
-
 
     const file = req.file;
     const fileUri = getDataUri(file);
