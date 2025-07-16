@@ -11,9 +11,7 @@ import Navbar from "../shared/Navbar";
 
 const JobDescription = () => {
   const { singleJob } = useSelector((store) => store.job);
- const { User } = useSelector((store) => store.auth);
-   const user = User;
-
+  const { user } = useSelector((store) => store.auth);
 
   const isInitiallyApplied =
     singleJob?.applications?.some(
@@ -52,7 +50,6 @@ console.log("User ID:", user?._id); // ✅ Check this
   };
 
   useEffect(() => {
-    if (!user?._id) return; 
     const fetchSingleJob = async () => {
       try {
         const res = await axios.get(`${JOB_API_END_POINT}/get/${jobid}`, {
