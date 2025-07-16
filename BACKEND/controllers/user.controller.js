@@ -85,7 +85,7 @@ const login = async (req, res) => {
       expiresIn: "1d",
     });
     const userData = {
-      _id: user._id,
+      userId: user._id,
       fullname: user.fullname,
       email: user.email,
       phonenumber: user.phonenumber,
@@ -178,7 +178,7 @@ const updateprofile = async (req, res) => {
 
     // Prepare response data
     const updatedUser = {
-      _id: user._id,
+      userId: user._id,
       fullname: user.fullname,
       email: user.email,
       phonenumber: user.phonenumber,

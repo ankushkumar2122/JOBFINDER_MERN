@@ -42,8 +42,11 @@ const Login = () => {
       });
       if (res.data.success) {
         // console.log(res.data.user);
-       
-        dispatch(SetUser(res.data.user));
+        const userWithCorrectId = {
+          ...res.data.user,
+          _id: res.data.user.userId, // ✅ Yeh line important hai
+        };
+        dispatch(SetUser(userWithCorrectId));
         navigate("/");
         toast.success(res.data.message);
       }
