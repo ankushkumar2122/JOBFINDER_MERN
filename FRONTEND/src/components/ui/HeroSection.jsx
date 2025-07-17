@@ -112,9 +112,15 @@
 import React from "react";
 import { Briefcase, Users, Building2 } from "lucide-react";
 import CompanyLogos from "./CompanyLogos";
+import { useSelector } from "react-redux";
 
 const HeroSection = () => {
- 
+  const { applicants } = useSelector((store) => store.application);
+ const { companies } = useSelector((store) => store.company);
+  const { allJobs } = useSelector((store) => store.job);
+
+
+  
   return (
     <div
       className="relative text-white"
@@ -182,7 +188,7 @@ const HeroSection = () => {
                 <Briefcase className="text-white w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-white font-bold text-xl">25</h2>
+                <h2 className="text-white font-bold text-xl">{allJobs?.length || 0}</h2>
                 <p className="text-white text-sm">Jobs</p>
               </div>
             </div>
@@ -193,7 +199,7 @@ const HeroSection = () => {
                 <Users className="text-white w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-white font-bold text-xl">100</h2>
+                <h2 className="text-white font-bold text-xl">{applicants?.applications?.length || 0}</h2>
                 <p className="text-white text-sm">Candidates</p>
               </div>
             </div>
@@ -204,7 +210,7 @@ const HeroSection = () => {
                 <Building2 className="text-white w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-white font-bold text-xl">180</h2>
+                <h2 className="text-white font-bold text-xl">{companies?.length || 0}</h2>
                 <p className="text-white text-sm">Companies</p>
               </div>
             </div>

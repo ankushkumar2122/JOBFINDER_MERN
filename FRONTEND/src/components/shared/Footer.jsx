@@ -104,6 +104,9 @@ const Footer = () => {
           <p className="text-xs text-gray-500">
             © 2025 JobFinder. All rights reserved.
           </p>
+          <p className="text-align:center; font-family:sans-serif;">
+           Developed by ❤️ <strong>Ankush Singh</strong>
+          </p>
         </div>
 
         {/* Navigation Links */}
@@ -155,7 +158,6 @@ const Footer = () => {
                 className="hover:text-green-400 transition duration-200"
               >
                 Terms & Conditions
-               
               </a>
             </li>
             <li>

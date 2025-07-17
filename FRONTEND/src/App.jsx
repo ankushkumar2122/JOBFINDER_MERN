@@ -24,6 +24,7 @@ import { SetUser } from "./redux/authslice";
 import CompanyCreate from "./components/admin/CompanyCreate";
 import CompanySetup from "./components/admin/CompanySetup";
 import PostJob from "./components/admin/PostJob";
+import Applicants from "./components/admin/Applicants";
 
 function App() {
   const dispatch = useDispatch();
@@ -67,6 +68,7 @@ function App() {
      { path: "/admin/companies/:id", element: <CompanySetup /> },
      { path: "/admin/jobs", element: <AdminJobs /> },
       { path: "/admin/jobs/create", element: <PostJob /> },
+      { path: "/admin/jobs/:id/applicants", element: <Applicants /> },
   ]);
 
   return <RouterProvider router={appRouter} />;
