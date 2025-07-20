@@ -112,20 +112,24 @@ import { Briefcase, Users, Building2 } from "lucide-react";
 import CompanyLogos from "./CompanyLogos";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setSerchTitle } from "@/redux/JobSlice";
+import { setSerchTitle } from "@/redux/JobSlice"; 
+import { toast } from "sonner";
 
 const HeroSection = () => {
   const { applicants } = useSelector((store) => store.application);
   const { companies } = useSelector((store) => store.company);
   const { allJobs } = useSelector((store) => store.job);
   const [title, setTitle] = useState("");
-  // const [location, setLocation] = useState();
+  // Removed location state
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const searchJobHandler = () => {
     dispatch(setSerchTitle(title));
+    // Removed dispatch for location
     navigate("/browse");
   };
+
   return (
     <div
       className="relative text-white"
@@ -150,27 +154,17 @@ const HeroSection = () => {
           </p>
 
           {/* Input Field */}
-          <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4 max-w-6xl mx-auto text-black ring-1 ring-gray-200">
-            {/* Job Title Input */}
+          <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-4 flex items-center gap-4 max-w-3xl mx-auto text-black ring-1 ring-gray-200">
             <input
               onChange={(e) => setTitle(e.target.value)}
               type="text"
               placeholder="Enter Job Title"
-              className="border border-gray-300 rounded-full px-5 py-3 w-full md:w-1/3 focus:outline-none focus:ring-2 focus:ring-[#00B34A] transition duration-200"
+              className="border border-gray-300 rounded-full px-5 py-3 w-[60%] focus:outline-none focus:ring-2 focus:ring-[#00B34A] transition duration-200"
             />
 
-            {/* Location Input */}
-            <input
-              onChange={(e) => setLocation(e.target.value)}
-              type="text"
-              placeholder="Enter Location"
-              className="border border-gray-300 rounded-full px-5 py-3 w-full md:w-1/3 focus:outline-none focus:ring-2 focus:ring-[#00B34A] transition duration-200"
-            />
-
-            {/* Search Button */}
             <button
               onClick={searchJobHandler}
-              className="bg-[#00B34A] hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-full w-full md:w-auto transition-all duration-300 shadow-md hover:shadow-lg"
+              className="bg-[#00B34A] hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-full w-[30%] transition-all duration-300 shadow-md hover:shadow-lg"
             >
               🔍 Search Job
             </button>
