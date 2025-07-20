@@ -1,6 +1,7 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage } from "./avatar";
+import { useNavigate } from "react-router-dom";
 // import { MdOutlineBookmarkAdd } from "react-icons/md";
 export const LatestJobCard = ({ job }) => {
   const dayAgoFunction = (mongodbTime) => {
@@ -9,16 +10,14 @@ export const LatestJobCard = ({ job }) => {
     const currentTime = new Date();
     const timeDiffrence = currentTime - createdAt;
     return Math.floor(timeDiffrence / (1000 * 24 * 60 * 60));
+   
   };
+     const navigate=useNavigate();
   return (
     <>
-      <div className="text-right">
-        {/* //move button right */}
-        <a href=""></a>
-        <button className="text-[#00B34A]  ">View all</button>
-      </div>
+     
 
-      <div className="p-5 mt-4 rounded-md  shadow-xl bg-white border border-gray-100 cursor-pointer ">
+      <div onClick={()=>navigate(`/description/${job._id}`)} className="p-5 mt-4 rounded-md  shadow-xl bg-white border border-gray-100 cursor-pointer ">
         <div>
           <Badge className="text-green-700 bg-green-100" variant="default">
             {dayAgoFunction(job?.createdAt)==0 ?"Today":`${dayAgoFunction(job?.createdAt)}Day ago`} 
