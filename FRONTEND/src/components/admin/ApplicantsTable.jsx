@@ -75,7 +75,7 @@ const ApplicantsTable = () => {
                     <PopoverTrigger>
                       <MoreHorizontal />
                     </PopoverTrigger>
-                    <PopoverContent className="w-32">
+                    <PopoverContent className="w-32 cursor-pointer">
                       {shortlistingStatus.map((status, index) => {
                         return (
                           <div  onClick={()=>statusHandler(status,item?._id)} key={index}>
