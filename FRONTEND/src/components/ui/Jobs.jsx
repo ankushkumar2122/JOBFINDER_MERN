@@ -5,6 +5,7 @@ import Filtercard from "./Filtercard";
 import Job from "./Job";
 import { useSelector } from "react-redux";
 
+import { motion } from "framer-motion";
 // const JobArray = [1, 2, 3,4];
 const Jobs = () => {
   const { allJobs, searchTitle } = useSelector((store) => store.job);
@@ -14,7 +15,8 @@ const Jobs = () => {
       const filterjobs = allJobs.filter((job) => {
         return (
           job.title.toLowerCase().includes(searchTitle.toLowerCase()) ||
-          job.description.toLowerCase().includes(searchTitle.toLowerCase())||job.location.toLowerCase().includes(searchTitle.toLowerCase())
+          job.description.toLowerCase().includes(searchTitle.toLowerCase()) ||
+          job.location.toLowerCase().includes(searchTitle.toLowerCase())
         );
       });
       setFilterJob(filterjobs);
@@ -40,9 +42,15 @@ const Jobs = () => {
 
               <div>
                 {filterjob.map((job) => (
-                  <div key={job?._id}>
+                  <motion.div
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -100 }}
+                    transition={{ duration: 0.3 }}
+                    key={job?._id}
+                  >
                     <Job job={job} />
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>

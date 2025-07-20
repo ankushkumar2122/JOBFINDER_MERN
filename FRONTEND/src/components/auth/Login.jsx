@@ -9,7 +9,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setLoading, SetUser } from "@/redux/authslice";
 import { Loader2 } from "lucide-react";
@@ -23,7 +23,7 @@ const Login = () => {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.auth.loading);
+  const { loading, user } = useSelector((store) => store.auth);
 
   const changeeventhandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -59,6 +59,11 @@ const Login = () => {
 
     // setInput({ ...input, file: e.target.files?.[0] });
   };
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
   return (
     <div>
       <Navbar />

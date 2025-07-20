@@ -4,7 +4,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/Constant";
 import { toast } from "sonner";
@@ -24,7 +24,7 @@ const Signup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const loading = useSelector((state) => state.auth.loading);
+   const { loading, user } = useSelector((store) => store.auth); 
 
 
   const changeEventhandler = (e) => {
@@ -67,6 +67,12 @@ const Signup = () => {
 
     // setInput({ ...input, file: e.target.files?.[0] });
   };
+  //it is for prtected when user is go through route when they login already 
+   useEffect(() => {
+      if (user) {
+        navigate("/");
+      }
+    }, []);
   return (
     <div>
       <Navbar />

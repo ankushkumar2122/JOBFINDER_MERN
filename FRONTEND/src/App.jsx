@@ -25,6 +25,7 @@ import CompanyCreate from "./components/admin/CompanyCreate";
 import CompanySetup from "./components/admin/CompanySetup";
 import PostJob from "./components/admin/PostJob";
 import Applicants from "./components/admin/Applicants";
+import ProtectedRoute from "./components/admin/ProtectedRoute";
 
 function App() {
   const dispatch = useDispatch();
@@ -63,12 +64,12 @@ function App() {
     { path: "/contact", element: <Contact /> },
     { path: "/profile", element: <Profile /> },
     //adimin ke liya
-    { path: "/admin/companies", element: <Companies /> },
-     { path: "/admin/companies/create", element: <CompanyCreate /> },
-     { path: "/admin/companies/:id", element: <CompanySetup /> },
-     { path: "/admin/jobs", element: <AdminJobs /> },
-      { path: "/admin/jobs/create", element: <PostJob /> },
-      { path: "/admin/jobs/:id/applicants", element: <Applicants /> },
+    { path: "/admin/companies", element: <ProtectedRoute><Companies /></ProtectedRoute>  },
+     { path: "/admin/companies/create", element:<ProtectedRoute><CompanyCreate /></ProtectedRoute>  },
+     { path: "/admin/companies/:id", element:<ProtectedRoute><CompanySetup /></ProtectedRoute>  },
+     { path: "/admin/jobs", element:<ProtectedRoute><AdminJobs /> </ProtectedRoute> },
+      { path: "/admin/jobs/create", element:<ProtectedRoute> <PostJob /></ProtectedRoute> },
+      { path: "/admin/jobs/:id/applicants", element: <ProtectedRoute><Applicants /></ProtectedRoute> },
   ]);
 
   return <RouterProvider router={appRouter} />;
