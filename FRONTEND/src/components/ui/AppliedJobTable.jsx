@@ -1,3 +1,4 @@
+import React from "react";
 import { useSelector } from "react-redux";
 import { Badge } from "./badge";
 import {
@@ -10,13 +11,11 @@ import {
   TableRow,
 } from "./table";
 
-import React from "react";
-
 const AppliedJobTable = () => {
- const { allAppliedJobs } = useSelector((store) => store.job);
+  const { allAppliedJobs } = useSelector((store) => store.job);
 
   return (
-    <div>
+    <div className="overflow-x-auto">
       <Table>
         <TableCaption>A List of your applied Jobs</TableCaption>
         <TableHeader>
@@ -28,7 +27,7 @@ const AppliedJobTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {allAppliedJobs.length <= 0 ? (
+          {!Array.isArray(allAppliedJobs) || allAppliedJobs.length === 0 ? (
             <TableRow>
               <TableCell colSpan={4} className="text-center">
                 You haven't applied to any jobs yet
@@ -41,7 +40,17 @@ const AppliedJobTable = () => {
                 <TableCell>{appliedjob?.job?.title}</TableCell>
                 <TableCell>{appliedjob?.job?.company?.name}</TableCell>
                 <TableCell className="text-right">
-                  <Badge className={`${appliedjob?.status=="rejected"?"bg-red-400":appliedjob.status=="pending"?"bg-blue-400":"bg-green-400"}`}>{ appliedjob?.status.toUpperCase()}</Badge>
+                  <Badge
+                    className={`${
+                      appliedjob?.status === "rejected"
+                        ? "bg-red-400"
+                        : appliedjob?.status === "pending"
+                        ? "bg-blue-400"
+                        : "bg-green-400"
+                    }`}
+                  >
+                    {appliedjob?.status?.toUpperCase()}
+                  </Badge>
                 </TableCell>
               </TableRow>
             ))
