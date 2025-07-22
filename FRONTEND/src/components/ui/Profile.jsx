@@ -15,7 +15,7 @@ const isResume = true;
 function Profile() {
   useGetAppliedjobs();
   const [open, setOpen] = useState(false);
-  const user = useSelector((store) => store.auth.User);
+  const {user} = useSelector((store) => store.auth);
   console.log("Resume URL:", user?.profile?.resume);
 
   return (

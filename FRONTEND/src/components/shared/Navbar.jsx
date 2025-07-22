@@ -125,9 +125,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
 import { Link, useNavigate } from "react-router-dom";
-import { Briefcase, LogOut, Menu, User2 } from "lucide-react";
+import { Briefcase, LogOut, Menu, User2, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { useDispatch, useSelector } from "react-redux";
@@ -139,9 +138,10 @@ import { SetUser } from "@/redux/authslice";
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user } = useSelector((store) => store.auth);
- 
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const logoutHandler = async () => {
     try {
       const res = await axios.get(`${USER_API_END_POINT}/logout`, {
@@ -153,34 +153,31 @@ const Navbar = () => {
         toast.success(res.data.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Logout failed");
     }
   };
+
   return (
-    <div className="bg-black">
+    <div className="bg-black relative z-50">
       <div className="flex items-center justify-between mx-auto max-w-7xl px-4 h-16">
         {/* Brand */}
-        <div>
-          <h1 className="text-2xl font-bold text-white">
-            <a href="/">
-              JOB <span className="text-[#00B34A]">FINDER</span>
-            </a>
-          </h1>
-        </div>
+        <h1 className="text-2xl font-bold text-white">
+          <Link to="/">
+            JOB <span className="text-[#00B34A]">FINDER</span>
+          </Link>
+        </h1>
 
-        {/* Hamburger (visible only on mobile) */}
+        {/* Hamburger Icon */}
         <div className="md:hidden">
-          <button className="text-white" onClick={() => setMenuOpen(!menuOpen)}>
+          <button className="text-white" onClick={() => setMenuOpen(true)}>
             <Menu size={28} />
           </button>
         </div>
 
-        {/* Links + Auth Buttons (Desktop Only) */}
+        {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-12">
           <ul className="text-white flex font-medium items-center gap-5">
-            {/* condition base link show */}
-            {user && user.role == "recruiter" ? (
+            {user && user.role === "recruiter" ? (
               <>
                 <li>
                   <Link to="/admin/companies" className="hover:text-green-400">
@@ -195,7 +192,6 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                {" "}
                 <li>
                   <Link to="/" className="hover:text-green-400">
                     Home
@@ -224,6 +220,7 @@ const Navbar = () => {
               </>
             )}
           </ul>
+
           {!user ? (
             <div className="flex items-center gap-2">
               <Link to="/login">
@@ -231,8 +228,8 @@ const Navbar = () => {
               </Link>
               <Link to="/signup">
                 <Button
-                  variant="outline"
                   className="bg-[#00B34A] hover:bg-[#00B34A] text-white"
+                  variant="outline"
                 >
                   Signup
                 </Button>
@@ -244,7 +241,7 @@ const Navbar = () => {
                 <Avatar className="w-10 h-10 cursor-pointer">
                   <AvatarImage
                     src={user?.profile?.profilePhoto}
-                    alt="@shadcn"
+                    alt="Profile"
                     className="rounded-full object-cover"
                   />
                 </Avatar>
@@ -252,37 +249,32 @@ const Navbar = () => {
               <PopoverContent
                 side="bottom"
                 align="end"
-                className="w-64 bg-white shadow-lg rounded-md p-4 text-black"
+                className="w-64 bg-white text-black shadow-lg rounded-md p-4"
               >
                 <div className="flex items-center gap-3">
                   <Avatar className="w-9 h-9">
                     <AvatarImage
                       src={user?.profile?.profilePhoto}
-                      alt="@shadcn"
+                      alt="User"
                       className="rounded-full object-cover"
                     />
                   </Avatar>
                   <div>
                     <h4 className="font-semibold">{user?.fullname}</h4>
-                    <p className="text-sm text-gray-600">
-                      {user?.profile?.bio}
-                    </p>
+                    <p className="text-sm text-gray-600">{user?.profile?.bio}</p>
                   </div>
                 </div>
-
                 <div className="mt-4 space-y-2">
-                  {user && user.role === "student" && (
-                    <>
-                      {" "}
-                      <div className="flex items-center gap-2">
-                        <User2 className="w-4 h-4" />
+                  {user.role === "student" && (
+                    <div className="flex items-center gap-2">
+                      <User2 className="w-4 h-4" />
+                      <Link to="/profile">
                         <Button variant="link" className="p-0 text-black">
-                          <Link to="/profile"> View Profile</Link>
+                          View Profile
                         </Button>
-                      </div>{" "}
-                    </>
+                      </Link>
+                    </div>
                   )}
-
                   <div className="flex items-center gap-2">
                     <LogOut className="w-4 h-4" />
                     <Button
@@ -300,49 +292,74 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu (Visible Only on Small Screens) */}
+      {/* === Mobile Sidebar === */}
       {menuOpen && (
-        <div className="md:hidden px-4 py-3 space-y-3 bg-black text-white">
-          <ul className="space-y-3">
-            <li>
-              <a href="/" className="hover:text-green-400">
-                Home
-              </a>
-            </li>
-            <li>
-              <a href="/jobs" className="hover:text-green-400">
-                Jobs
-              </a>
-            </li>
-            <li>
-              <a href="/about" className="hover:text-green-400">
-                About Us
-              </a>
-            </li>
-            <li>
-              <a href="/contact" className="hover:text-green-400">
-            
-                Contact Us
-              </a>
-            </li>
-          </ul>
-          <div className="pt-4 flex gap-2">
-            <Link to="/login" className="w-full">
-              <Button className="w-full bg-[#00B34A] text-white hover:bg-[#00B34A] " variant="outline">
-                
-                Login
-              </Button>
-            </Link>
-            <Link to="/signup" className="w-full text-black">
-              <Button
-                className="w-full bg-[#00B34A] text-white hover:bg-[#00B34A]"
-                variant="outline"
+        <>
+          {/* Overlay */}
+          <div
+            className="fixed inset-0 bg-black bg-opacity-60 z-40"
+            onClick={() => setMenuOpen(false)}
+          />
+
+          {/* Sidebar */}
+          <div className="fixed top-0 left-0 h-full w-64 bg-black z-50 text-white shadow-lg flex flex-col">
+            <div className="flex items-center justify-between px-4 py-4 border-b border-gray-700">
+              <h2 className="text-xl font-bold text-green-500">JOB FINDER</h2>
+              <button
+                onClick={() => setMenuOpen(false)}
+                className="text-white focus:outline-none"
               >
-                Signup
-              </Button>
-            </Link>
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Scrollable links container */}
+            <nav className="flex-1 overflow-y-auto flex flex-col gap-4 p-4">
+              <Link
+                to="/"
+                className="hover:text-green-400"
+                onClick={() => setMenuOpen(false)}
+              >
+                Home
+              </Link>
+              <Link
+                to="/jobs"
+                className="hover:text-green-400"
+                onClick={() => setMenuOpen(false)}
+              >
+                Jobs
+              </Link>
+              <Link
+                to="/about"
+                className="hover:text-green-400"
+                onClick={() => setMenuOpen(false)}
+              >
+                About Us
+              </Link>
+              <Link
+                to="/contact"
+                className="hover:text-green-400"
+                onClick={() => setMenuOpen(false)}
+              >
+                Contact Us
+              </Link>
+            </nav>
+
+            {/* Auth Buttons sticky at bottom */}
+            <div className="p-4 border-t border-gray-700">
+              <Link to="/login" onClick={() => setMenuOpen(false)}>
+                <Button className="w-full bg-[#00B34A] text-white hover:bg-[#00B34A] mb-2">
+                  Login
+                </Button>
+              </Link>
+              <Link to="/signup" onClick={() => setMenuOpen(false)}>
+                <Button className="w-full bg-[#00B34A] text-white hover:bg-[#00B34A]">
+                  Signup
+                </Button>
+              </Link>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

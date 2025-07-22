@@ -3,17 +3,16 @@ import { toast } from "sonner"; // or 'react-toastify' if you're using that
 import { useNavigate } from "react-router-dom";
 import { USER_API_END_POINT } from "@/utils/Constant";
 
-import { RadioGroup, RadioGroupItem } from "@radix-ui/react-radio-group";
+import { RadioGroup } from "@radix-ui/react-radio-group";
 import Navbar from "../shared/Navbar";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLoading, SetUser } from "@/redux/authslice";
 import { Loader2 } from "lucide-react";
-import { useSelector } from "react-redux";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -33,7 +32,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      dispatch(setLoading(true)); // Set loading state to true
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
         headers: {
           "Content-Type": "application/json",
@@ -41,10 +40,9 @@ const Login = () => {
         withCredentials: true,
       });
       if (res.data.success) {
-        // console.log(res.data.user);
         const userWithCorrectId = {
           ...res.data.user,
-          _id: res.data.user.userId, // ✅ Yeh line important hai
+          _id: res.data.user.userId,
         };
         dispatch(SetUser(userWithCorrectId));
         navigate("/");
@@ -52,25 +50,25 @@ const Login = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Login failed");
     } finally {
-      dispatch(setLoading(false)); // Set loading state to false
+      dispatch(setLoading(false));
     }
-
-    // setInput({ ...input, file: e.target.files?.[0] });
   };
+
   useEffect(() => {
     if (user) {
       navigate("/");
     }
-  }, []);
+  }, [user, navigate]);
+
   return (
     <div>
       <Navbar />
-      <div className="flex items-center justify-center max-w-7xl mx-auto">
+      <div className="flex items-center justify-center max-w-7xl mx-auto px-4">
         <form
           onSubmit={submithandler}
-          className="w-1/2 border border-gray-200 rounded-md p-4 my-10"
+          className="w-full max-w-md md:w-1/2 md:max-w-none bg-white border border-gray-200 rounded-md p-6 shadow-md mx-auto my-10"
         >
           <h1 className="font-bold text-xl mb-5">Login</h1>
 
@@ -82,6 +80,7 @@ const Login = () => {
               value={input.email}
               name="email"
               onChange={changeeventhandler}
+              required
             />
           </div>
 
@@ -93,8 +92,10 @@ const Login = () => {
               value={input.password}
               name="password"
               onChange={changeeventhandler}
+              required
             />
           </div>
+
           <div className="flex items-center justify-center">
             <RadioGroup className="flex items-center gap-4 my-5 pr-4">
               <div className="flex items-center space-x-2">
@@ -102,27 +103,32 @@ const Login = () => {
                   type="radio"
                   name="role"
                   value="student"
-                  checked={input.role == "student"}
+                  checked={input.role === "student"}
                   onChange={changeeventhandler}
                   className="cursor-pointer"
+                  id="studentRole"
+                  required
                 />
-                <Label htmlFor="r1">Student</Label>
+                <Label htmlFor="studentRole">Student</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Input
                   type="radio"
                   name="role"
                   value="recruiter"
-                  checked={input.role == "recruiter"}
+                  checked={input.role === "recruiter"}
                   onChange={changeeventhandler}
                   className="cursor-pointer"
+                  id="recruiterRole"
+                  required
                 />
-                <Label htmlFor="r2">Recruiter</Label>
+                <Label htmlFor="recruiterRole">Recruiter</Label>
               </div>
             </RadioGroup>
           </div>
+
           {loading ? (
-            <Button className="w-full my-4 bg-[#00B34A]">
+            <Button className="w-full my-4 bg-[#00B34A] flex justify-center items-center">
               <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait
             </Button>
           ) : (
@@ -131,15 +137,16 @@ const Login = () => {
             </Button>
           )}
 
-          <span className="text-sm">
-            don't have an account?{" "}
+          <span className="text-sm block text-center">
+            Don't have an account?{" "}
             <Link to="/signup" className="text-[#00B34A]">
               Signup
-            </Link>{" "}
+            </Link>
           </span>
         </form>
       </div>
     </div>
   );
 };
+
 export default Login;

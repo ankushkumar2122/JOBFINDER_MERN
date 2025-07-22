@@ -1,4 +1,4 @@
-import { RadioGroup, RadioGroupItem } from "@radix-ui/react-radio-group";
+import { RadioGroup } from "@radix-ui/react-radio-group";
 import Navbar from "../shared/Navbar";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -21,11 +21,10 @@ const Signup = () => {
     role: "",
     file: "",
   });
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-   const { loading, user } = useSelector((store) => store.auth); 
-
+  const { loading, user } = useSelector((store) => store.auth);
 
   const changeEventhandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -34,6 +33,7 @@ const Signup = () => {
   const changefilethandler = (e) => {
     setInput({ ...input, file: e.target.files?.[0] });
   };
+
   const submithandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -45,6 +45,7 @@ const Signup = () => {
     if (input.file) {
       formData.append("file", input.file);
     }
+
     try {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
@@ -53,36 +54,36 @@ const Signup = () => {
         },
         withCredentials: true,
       });
+
       if (res.data.success) {
         navigate("/login");
         toast.success(res.data.message);
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Signup failed");
+    } finally {
+      dispatch(setLoading(false));
     }
-    finally{
-       dispatch(setLoading(false));
-    }
-
-    // setInput({ ...input, file: e.target.files?.[0] });
   };
-  //it is for prtected when user is go through route when they login already 
-   useEffect(() => {
-      if (user) {
-        navigate("/");
-      }
-    }, []);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   return (
     <div>
       <Navbar />
-      <div className="flex items-center justify-center max-w-7xl mx-auto">
+      <div className="flex items-center justify-center max-w-7xl mx-auto px-4">
         <form
           onSubmit={submithandler}
-          className="w-1/2 border border-gray-200 rounded-md p-4 my-10"
+          className="w-full max-w-md md:w-1/2 bg-white border border-gray-200 rounded-md p-6 shadow-md my-10"
         >
           <h1 className="font-bold text-xl mb-5">Signup</h1>
-          <div className="my-2">
+
+          <div className="my-3">
             <Label>Full Name</Label>
             <Input
               type="text"
@@ -90,29 +91,35 @@ const Signup = () => {
               value={input.fullname}
               name="fullname"
               onChange={changeEventhandler}
+              required
             />
           </div>
-          <div className="my-2">
+
+          <div className="my-3">
             <Label>Email</Label>
             <Input
               type="email"
-              placeholder="Ankushkumar@gmail.com"
+              placeholder="ankushkumar@gmail.com"
               value={input.email}
               name="email"
               onChange={changeEventhandler}
+              required
             />
           </div>
-          <div className="my-2">
-            <Label>Number</Label>
+
+          <div className="my-3">
+            <Label>Phone Number</Label>
             <Input
-              type="number"
+              type="tel"
               placeholder="789451231"
               value={input.phoneNumber}
               name="phoneNumber"
               onChange={changeEventhandler}
+              required
             />
           </div>
-          <div className="my-2">
+
+          <div className="my-3">
             <Label>Password</Label>
             <Input
               type="password"
@@ -120,65 +127,72 @@ const Signup = () => {
               value={input.password}
               name="password"
               onChange={changeEventhandler}
+              required
             />
           </div>
-          <div className="flex items-center justify-center">
-            <RadioGroup className="flex items-center gap-4 my-5 pr-4">
+
+          <div className="my-4">
+            <Label className="block mb-2">Select Role</Label>
+            <RadioGroup className="flex items-center gap-6">
               <div className="flex items-center space-x-2">
                 <Input
                   type="radio"
                   name="role"
                   value="student"
-                  checked={input.role == "student"}
+                  checked={input.role === "student"}
                   onChange={changeEventhandler}
                   className="cursor-pointer"
+                  id="student"
+                  required
                 />
-                <Label htmlFor="r1">Student</Label>
+                <Label htmlFor="student">Student</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Input
                   type="radio"
                   name="role"
                   value="recruiter"
-                  checked={input.role == "recruiter"}
+                  checked={input.role === "recruiter"}
                   onChange={changeEventhandler}
                   className="cursor-pointer"
+                  id="recruiter"
+                  required
                 />
-                <Label htmlFor="r2">Recruiter</Label>
+                <Label htmlFor="recruiter">Recruiter</Label>
               </div>
             </RadioGroup>
-            <div> </div>
-            <div className="flex items-center  gap-2">
-              <Label>Profile</Label>
-              <Input
-                accept="image/*"
-                type="file"
-                className="cursor-pointer"
-                onChange={changefilethandler}
-              />
-            </div>
           </div>
+
+          <div className="my-4">
+            <Label>Profile Picture</Label>
+            <Input
+              accept="image/*"
+              type="file"
+              onChange={changefilethandler}
+              className="cursor-pointer mt-2"
+            />
+          </div>
+
           {loading ? (
-            <Button className="w-full my-4 bg-[#00B34A]">
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait
+            <Button className="w-full my-4 bg-[#00B34A] flex justify-center items-center">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
             </Button>
           ) : (
             <Button type="submit" className="w-full my-4 bg-[#00B34A]">
-              signup
+              Signup
             </Button>
           )}
-          {/* <Button type="submit" className="w-full my-4 bg-[#00B34A]">
-           
-          </Button> */}
-          <span className="text-sm">
-            already have an account?{" "}
-            <Link to="/login" className="text-[#00B34A]">
+
+          <span className="text-sm block text-center">
+            Already have an account?{" "}
+            <Link to="/login" className="text-[#00B34A] font-medium">
               Login
-            </Link>{" "}
+            </Link>
           </span>
         </form>
       </div>
     </div>
   );
 };
+
 export default Signup;

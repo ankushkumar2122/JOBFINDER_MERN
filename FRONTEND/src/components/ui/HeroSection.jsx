@@ -112,21 +112,19 @@ import { Briefcase, Users, Building2 } from "lucide-react";
 import CompanyLogos from "./CompanyLogos";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setSerchTitle } from "@/redux/JobSlice"; 
-import { toast } from "sonner";
+import { setSerchTitle } from "@/redux/JobSlice";
 
 const HeroSection = () => {
   const { applicants } = useSelector((store) => store.application);
   const { companies } = useSelector((store) => store.company);
   const { allJobs } = useSelector((store) => store.job);
   const [title, setTitle] = useState("");
-  // Removed location state
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const searchJobHandler = () => {
     dispatch(setSerchTitle(title));
-    // Removed dispatch for location
     navigate("/browse");
   };
 
@@ -146,69 +144,62 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-4">
         <div className="text-center w-full">
-          <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl mb-4 leading-tight">
+          <h1 className="font-bold text-2xl sm:text-3xl md:text-5xl mb-4 leading-tight">
             Discover Your Dream Job. Apply Today
           </h1>
-          <p className="text-md sm:text-lg mb-6 px-2 sm:px-0">
+          <p className="text-sm sm:text-base md:text-lg mb-6 px-2 sm:px-0">
             Connecting talent with opportunity. Your gateway to career success.
           </p>
 
-          {/* Input Field */}
-          <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-4 flex items-center gap-4 max-w-3xl mx-auto text-black ring-1 ring-gray-200">
+          {/* Input Field - Responsive */}
+          <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-4 flex flex-col sm:flex-row items-center gap-4 max-w-3xl mx-auto text-black ring-1 ring-gray-200">
             <input
               onChange={(e) => setTitle(e.target.value)}
               type="text"
               placeholder="Enter Job Title"
-              className="border border-gray-300 rounded-full px-5 py-3 w-[60%] focus:outline-none focus:ring-2 focus:ring-[#00B34A] transition duration-200"
+              className="border border-gray-300 rounded-full px-5 py-3 w-full sm:w-[60%] focus:outline-none focus:ring-2 focus:ring-[#00B34A] transition duration-200"
             />
-
             <button
               onClick={searchJobHandler}
-              className="bg-[#00B34A] hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-full w-[30%] transition-all duration-300 shadow-md hover:shadow-lg"
+              className="bg-[#00B34A] hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-full w-full sm:w-[30%] transition-all duration-300 shadow-md hover:shadow-lg"
             >
               🔍 Search Job
             </button>
           </div>
 
-          {/* Overview Stats */}
-          <div className="flex flex-col md:flex-row justify-center items-center gap-10 py-10 px-4">
+          {/* Stats Section - Responsive & Centered */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-8 py-10 px-4 text-center">
             {/* Jobs */}
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col items-center space-y-2">
               <div className="bg-[#00B34A] p-4 rounded-full">
                 <Briefcase className="text-white w-6 h-6" />
               </div>
-              <div>
-                <h2 className="text-white font-bold text-xl">
-                  {allJobs?.length || 0}
-                </h2>
-                <p className="text-white text-sm">Jobs</p>
-              </div>
+              <h2 className="text-white font-bold text-xl">
+                {allJobs?.length || 0}
+              </h2>
+              <p className="text-white text-sm">Jobs</p>
             </div>
 
             {/* Candidates */}
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col items-center space-y-2">
               <div className="bg-[#00B34A] p-4 rounded-full">
                 <Users className="text-white w-6 h-6" />
               </div>
-              <div>
-                <h2 className="text-white font-bold text-xl">
-                  {applicants?.applications?.length || 0}
-                </h2>
-                <p className="text-white text-sm">Candidates</p>
-              </div>
+              <h2 className="text-white font-bold text-xl">
+                {applicants?.applications?.length || 0}
+              </h2>
+              <p className="text-white text-sm">Candidates</p>
             </div>
 
             {/* Companies */}
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col items-center space-y-2">
               <div className="bg-[#00B34A] p-4 rounded-full">
                 <Building2 className="text-white w-6 h-6" />
               </div>
-              <div>
-                <h2 className="text-white font-bold text-xl">
-                  {companies?.length || 0}
-                </h2>
-                <p className="text-white text-sm">Companies</p>
-              </div>
+              <h2 className="text-white font-bold text-xl">
+                {companies?.length || 0}
+              </h2>
+              <p className="text-white text-sm">Companies</p>
             </div>
           </div>
         </div>
