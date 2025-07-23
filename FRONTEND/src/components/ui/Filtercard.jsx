@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { RadioGroupItem } from "./radio-group";
 import { useDispatch } from "react-redux";
 import { setSerchTitle } from "@/redux/JobSlice";
+
 const filterData = [
   {
     filterType: "Title",
@@ -31,35 +32,37 @@ const filterData = [
       "Gurgaon",
     ],
   },
-  // {
-  //   filterType: "Salary",
-  //   array: ["0-40k", "42-1lakh", "1lakh-5lakh"],
-  // },
 ];
 
 const Filtercard = () => {
   const [selectedValue, setSelectedValue] = useState("");
   const dispatch = useDispatch();
+
   const changeHandler = (value) => {
     setSelectedValue(value);
   };
+
   useEffect(() => {
     dispatch(setSerchTitle(selectedValue));
   }, [selectedValue]);
+
   return (
-    <div className="w-full bg-white p-3 rounded-md">
-      <h1 className="font-bold text-lg ">Filter Jobs</h1>
-      <hr className="mt-3" />
+    <div className="w-full bg-white p-4 rounded-md shadow-sm border border-gray-200">
+      <h1 className="font-bold text-lg mb-3">Filter Jobs</h1>
+      <hr className="mb-4" />
+
       <RadioGroup value={selectedValue} onValueChange={changeHandler}>
         {filterData.map((data, index) => (
-          <div>
-            <h1 className="font-bold text-lg">{data.filterType}</h1>
+          <div key={index} className="mb-4">
+            <h2 className="font-semibold text-sm mb-2">{data.filterType}</h2>
             {data.array.map((item, idx) => {
-              const itemId = `id${index - idx}`;
+              const itemId = `id-${data.filterType}-${idx}`;
               return (
-                <div className="flex items-center space-x-2 mt-1">
+                <div className="flex items-center space-x-2 mb-1" key={itemId}>
                   <RadioGroupItem value={item} id={itemId} />
-                  <Label htmlFor={itemId}>{item}</Label>
+                  <Label htmlFor={itemId} className="text-sm">
+                    {item}
+                  </Label>
                 </div>
               );
             })}

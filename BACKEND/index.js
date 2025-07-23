@@ -8,6 +8,7 @@ const companyRouter = require("./routes/company.route");
 const jobRouter = require("./routes/job.route");
 const applicationRouter = require("./routes/application.route");
 const { connectDb } = require("./utils/db");
+const contactRouter = require("./routes/contact.route");
 
 dotenv.config();
 
@@ -33,6 +34,8 @@ app.use("/api/v1/user", UserRouter);
 app.use("/api/v1/company", companyRouter);
 app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/application", applicationRouter);
+app.use("/api/contact", contactRouter);
+
 
 // Start the server
 const PORT = process.env.PORT || 8000;

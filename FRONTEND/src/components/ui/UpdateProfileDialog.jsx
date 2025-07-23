@@ -19,7 +19,7 @@ import { toast } from "sonner";
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
   const [Loading, setLoading] = useState(false);
-  const {user} = useSelector((store) => store.auth);
+  const { user } = useSelector((store) => store.auth);
 
   const [input, setInput] = useState({
     //fetch data of user
@@ -28,7 +28,6 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     phonenumber: user?.phonenumber,
     bio: user?.profile?.bio,
     skills: user?.profile?.skills?.join(", ") || "",
-
     file: null,
   });
   const dispatch = useDispatch();
@@ -86,19 +85,17 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
     setOpen(false);
   };
+
   return (
     <div>
-      <Dialog open={open}>
-        <DialogContent
-          className="sm:max-w-[425px]"
-          onInteractOutside={() => setOpen(false)}
-        >
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Update Profile</DialogTitle>
           </DialogHeader>
@@ -110,7 +107,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                 </Label>
                 <Input
                   id="name"
-                  name="name"
+                  name="fullname"
                   onChange={changeEventHandler}
                   value={input.fullname}
                   className="col-span-3"
@@ -135,7 +132,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                 </Label>
                 <Input
                   id="number"
-                  name="number"
+                  name="phonenumber"
                   onChange={changeEventHandler}
                   value={input.phonenumber}
                   className="col-span-3"

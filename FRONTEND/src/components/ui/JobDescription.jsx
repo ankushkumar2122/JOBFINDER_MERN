@@ -20,9 +20,8 @@ const JobDescription = () => {
   const params = useParams();
   const jobid = params.id;
   const dispatch = useDispatch();
-console.log("Job ID:", jobid); // ✅ Check this
-console.log("User ID:", user._id); // ✅ Check this
-  // ✅ Apply Function
+
+  // Apply Function
   const applyJobHandler = async () => {
     try {
       const res = await axios.get(
@@ -31,12 +30,12 @@ console.log("User ID:", user._id); // ✅ Check this
       );
 
       if (res.data.success) {
-        setIsApplied(true); // Update local state
+        setIsApplied(true);
         const updatedSingleJob = {
           ...singleJob,
           applications: [...singleJob.applications, { applicant: user?._id }],
         };
-        dispatch(setSingleJob(updatedSingleJob)); // Update Redux state
+        dispatch(setSingleJob(updatedSingleJob));
         toast.success(res.data.message);
       }
     } catch (error) {
@@ -45,7 +44,7 @@ console.log("User ID:", user._id); // ✅ Check this
     }
   };
 
-  // ✅ Fetch Job Data on Mount
+  // Fetch Job Data on Mount
   useEffect(() => {
     const fetchSingleJob = async () => {
       try {
@@ -72,11 +71,12 @@ console.log("User ID:", user._id); // ✅ Check this
   return (
     <>
       <Navbar />
-      <div className="max-w-7xl mx-auto my-10">
-        <div className="flex items-center justify-between">
+      <div className="max-w-7xl mx-auto mt-24 px-4 sm:px-6 lg:px-8">
+        {/* Header with title, badges and Apply button for desktop */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div>
-            <h1 className="font-bold text-xl">{singleJob?.title}</h1>
-            <div className="flex items-center gap-2 mt-4">
+            <h1 className="font-bold text-2xl sm:text-3xl">{singleJob?.title}</h1>
+            <div className="flex flex-wrap items-center gap-2 mt-4">
               <Badge className="text-blue-700 font-bold" variant="ghost">
                 {singleJob?.position} Position
               </Badge>
@@ -89,66 +89,57 @@ console.log("User ID:", user._id); // ✅ Check this
             </div>
           </div>
 
+          {/* Apply Button (Desktop only) */}
           <Button
-            onClick={isApplied ? null : applyJobHandler}
+            onClick={isApplied ? undefined : applyJobHandler}
             disabled={isApplied}
-            className={`rounded-lg ${
+            className={`rounded-lg max-w-[180px] w-full ${
               isApplied
                 ? "bg-gray-600 cursor-not-allowed"
-                : "bg-[#00B34A] text-white hover:bg-[#00B34]"
-            }`}
+                : "bg-[#00B34A] text-white hover:bg-[#00B34A]/90"
+            } hidden md:block`}
           >
             {isApplied ? "Already Applied" : "Apply Now"}
           </Button>
         </div>
 
-        <h1 className="border-b-2 border-b-gray-300 font-medium py-4">
+        <h2 className="border-b-2 border-b-gray-300 font-medium py-4 mt-6">
           {singleJob?.description}
-        </h1>
+        </h2>
 
-        <div className="my-4">
-          <h1 className="font-bold my-1">
-            Role:{" "}
-            <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.title}
-            </span>
-          </h1>
-          <h1 className="font-bold my-1">
-            Location:{" "}
-            <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.location}
-            </span>
-          </h1>
-          <h1 className="font-bold my-1">
-            Description:{" "}
-            <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.description}
-            </span>
-          </h1>
-          <h1 className="font-bold my-1">
-            Experience:{" "}
-            <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.experienceLevel} Years
-            </span>
-          </h1>
-          <h1 className="font-bold my-1">
-            Salary:{" "}
-            <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.salary} LPA
-            </span>
-          </h1>
-          <h1 className="font-bold my-1">
-            Total Applicants:{" "}
-            <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.applications?.length}
-            </span>
-          </h1>
-          <h1 className="font-bold my-1">
-            Posted Date:{" "}
-            <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.createdAt?.split("T")[0]}
-            </span>
-          </h1>
+        <div className="my-4 space-y-2">
+          {[
+            { label: "Role", value: singleJob?.title },
+            { label: "Location", value: singleJob?.location },
+            { label: "Description", value: singleJob?.description },
+            { label: "Experience", value: `${singleJob?.experienceLevel} Years` },
+            { label: "Salary", value: `${singleJob?.salary} LPA` },
+            { label: "Total Applicants", value: singleJob?.applications?.length },
+            {
+              label: "Posted Date",
+              value: singleJob?.createdAt?.split("T")[0],
+            },
+          ].map(({ label, value }) => (
+            <h3 key={label} className="font-bold">
+              {label}:{" "}
+              <span className="pl-4 font-normal text-gray-800 break-words">{value}</span>
+            </h3>
+          ))}
+        </div>
+
+        {/* Apply Button (Mobile only, below details) */}
+        <div className="mt-6 md:hidden">
+          <Button
+            onClick={isApplied ? undefined : applyJobHandler}
+            disabled={isApplied}
+            className={`rounded-lg w-full ${
+              isApplied
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-[#00B34A] text-white hover:bg-[#00B34A]/90"
+            }`}
+          >
+            {isApplied ? "Already Applied" : "Apply Now"}
+          </Button>
         </div>
       </div>
     </>
