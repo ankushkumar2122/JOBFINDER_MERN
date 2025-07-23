@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Navbar from "../shared/Navbar";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -40,7 +41,9 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
-      <div className="max-w-3xl w-full bg-white p-8 rounded-lg shadow-md">
+        <Navbar/>
+      <div className="max-w-3xl w-full bg-white p-8 rounded-lg shadow-md mt-10">
+       
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-900">Contact Us</h2>
 
         {submitted && (

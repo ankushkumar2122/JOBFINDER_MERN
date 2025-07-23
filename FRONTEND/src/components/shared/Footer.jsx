@@ -102,8 +102,9 @@ const Footer = () => {
             easily.
           </p>
           <p className="text-xs text-gray-500">
-            © 2025 JobFinder. All rights reserved.
+           © {new Date().getFullYear()} JobFinder. All rights reserved.
           </p>
+        
           <p className="text-align:center; font-family:sans-serif;">
            Developed by ❤️ <strong>Ankush Singh</strong>
           </p>
