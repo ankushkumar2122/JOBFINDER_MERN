@@ -1,5 +1,5 @@
 import axios from "axios";
-import { toast } from "sonner"; // or 'react-toastify' if you're using that
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { USER_API_END_POINT } from "@/utils/Constant";
 
@@ -20,6 +20,7 @@ const Login = () => {
     password: "",
     role: "",
   });
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, user } = useSelector((store) => store.auth);
@@ -39,6 +40,7 @@ const Login = () => {
         },
         withCredentials: true,
       });
+
       if (res.data.success) {
         const userWithCorrectId = {
           ...res.data.user,
@@ -65,10 +67,12 @@ const Login = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex items-center justify-center max-w-7xl mx-auto px-4">
+
+      {/* Padding top to offset fixed navbar height */}
+      <div className="pt-24 flex items-center justify-center max-w-7xl mx-auto px-4">
         <form
           onSubmit={submithandler}
-          className="w-full max-w-md md:w-1/2 md:max-w-none bg-white border border-gray-200 rounded-md p-6 shadow-md mx-auto my-10"
+          className="w-full max-w-md md:w-1/2 bg-white border border-gray-200 rounded-md p-6 shadow-md"
         >
           <h1 className="font-bold text-xl mb-5">Login</h1>
 
@@ -129,7 +133,7 @@ const Login = () => {
 
           {loading ? (
             <Button className="w-full my-4 bg-[#00B34A] flex justify-center items-center">
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
             </Button>
           ) : (
             <Button type="submit" className="w-full my-4 bg-[#00B34A]">
@@ -138,8 +142,8 @@ const Login = () => {
           )}
 
           <span className="text-sm block text-center">
-            Don't have an account?{" "}
-            <Link to="/signup" className="text-[#00B34A]">
+            Don&apos;t have an account?{" "}
+            <Link to="/signup" className="text-[#00B34A] font-medium">
               Signup
             </Link>
           </span>

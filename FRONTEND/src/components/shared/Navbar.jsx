@@ -158,7 +158,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-black relative z-50">
+    <div className="fixed top-0 left-0 w-full bg-black z-50">
       <div className="flex items-center justify-between mx-auto max-w-7xl px-4 h-16">
         {/* Brand */}
         <h1 className="text-2xl font-bold text-white">

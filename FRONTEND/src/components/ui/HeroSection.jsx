@@ -130,7 +130,7 @@ const HeroSection = () => {
 
   return (
     <div
-      className="relative text-white"
+      className="relative text-white pt-24" // ✅ Fix: add padding to offset fixed navbar
       style={{
         backgroundImage: "url('/assets/hero-bg.jpg')",
         backgroundSize: "cover",
@@ -151,7 +151,7 @@ const HeroSection = () => {
             Connecting talent with opportunity. Your gateway to career success.
           </p>
 
-          {/* Input Field - Responsive */}
+          {/* Search Input */}
           <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-4 flex flex-col sm:flex-row items-center gap-4 max-w-3xl mx-auto text-black ring-1 ring-gray-200">
             <input
               onChange={(e) => setTitle(e.target.value)}
@@ -167,7 +167,7 @@ const HeroSection = () => {
             </button>
           </div>
 
-          {/* Stats Section - Responsive & Centered */}
+          {/* Stats */}
           <div className="flex flex-col sm:flex-row justify-center items-center gap-8 py-10 px-4 text-center">
             {/* Jobs */}
             <div className="flex flex-col items-center space-y-2">

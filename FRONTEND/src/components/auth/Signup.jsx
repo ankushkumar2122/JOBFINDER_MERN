@@ -60,7 +60,6 @@ const Signup = () => {
         toast.success(res.data.message);
       }
     } catch (error) {
-      console.log(error);
       toast.error(error.response?.data?.message || "Signup failed");
     } finally {
       dispatch(setLoading(false));
@@ -76,14 +75,17 @@ const Signup = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex items-center justify-center max-w-7xl mx-auto px-4">
+
+      {/* Shift down on all screen sizes */}
+      <div className="pt-24 px-4 flex justify-center">
+        {/* Responsive width: 100% on mobile, 50% on md and up */}
         <form
           onSubmit={submithandler}
-          className="w-full max-w-md md:w-1/2 bg-white border border-gray-200 rounded-md p-6 shadow-md my-10"
+          className="w-full md:w-1/2 bg-white border border-gray-200 rounded-md p-6 shadow-md"
         >
           <h1 className="font-bold text-xl mb-5">Signup</h1>
 
-          <div className="my-3">
+          <div className="mb-3">
             <Label>Full Name</Label>
             <Input
               type="text"
@@ -95,7 +97,7 @@ const Signup = () => {
             />
           </div>
 
-          <div className="my-3">
+          <div className="mb-3">
             <Label>Email</Label>
             <Input
               type="email"
@@ -107,7 +109,7 @@ const Signup = () => {
             />
           </div>
 
-          <div className="my-3">
+          <div className="mb-3">
             <Label>Phone Number</Label>
             <Input
               type="tel"
@@ -119,7 +121,7 @@ const Signup = () => {
             />
           </div>
 
-          <div className="my-3">
+          <div className="mb-3">
             <Label>Password</Label>
             <Input
               type="password"
@@ -141,9 +143,7 @@ const Signup = () => {
                   value="student"
                   checked={input.role === "student"}
                   onChange={changeEventhandler}
-                  className="cursor-pointer"
                   id="student"
-                  required
                 />
                 <Label htmlFor="student">Student</Label>
               </div>
@@ -154,9 +154,7 @@ const Signup = () => {
                   value="recruiter"
                   checked={input.role === "recruiter"}
                   onChange={changeEventhandler}
-                  className="cursor-pointer"
                   id="recruiter"
-                  required
                 />
                 <Label htmlFor="recruiter">Recruiter</Label>
               </div>
