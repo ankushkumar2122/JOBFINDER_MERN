@@ -107,7 +107,7 @@
 
 // export default HeroSection;
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Briefcase, Users, Building2 } from "lucide-react";
 import CompanyLogos from "./CompanyLogos";
 import { useDispatch, useSelector } from "react-redux";
@@ -123,6 +123,34 @@ const HeroSection = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const fullText = "Discover Your Dream Job. Apply Today";
+  const [displayedText, setDisplayedText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const typingSpeed = isDeleting ? 100: 100;
+
+    const timeout = setTimeout(() => {
+      setDisplayedText((prev) => {
+        const updatedText = isDeleting
+          ? fullText.substring(0, prev.length - 1)
+          : fullText.substring(0, prev.length + 1);
+
+        if (!isDeleting && updatedText === fullText) {
+          setTimeout(() => setIsDeleting(true), 1000);
+        } else if (isDeleting && updatedText === "") {
+          setIsDeleting(false);
+          setIndex(0);
+        }
+
+        return updatedText;
+      });
+    }, typingSpeed);
+
+    return () => clearTimeout(timeout);
+  }, [displayedText, isDeleting]);
+
   const searchJobHandler = () => {
     dispatch(setSerchTitle(title));
     navigate("/browse");
@@ -130,7 +158,7 @@ const HeroSection = () => {
 
   return (
     <div
-      className="relative text-white pt-24" // ✅ Fix: add padding to offset fixed navbar
+      className="relative text-white pt-24"
       style={{
         backgroundImage: "url('/assets/hero-bg.jpg')",
         backgroundSize: "cover",
@@ -144,9 +172,12 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-4">
         <div className="text-center w-full">
+          {/* 🔁 Looping Typewriter Text */}
           <h1 className="font-bold text-2xl sm:text-3xl md:text-5xl mb-4 leading-tight">
-            Discover Your Dream Job. Apply Today
+            {displayedText}
+            <span className="text-[#00B34A] animate-pulse">|</span>
           </h1>
+
           <p className="text-sm sm:text-base md:text-lg mb-6 px-2 sm:px-0">
             Connecting talent with opportunity. Your gateway to career success.
           </p>
@@ -169,7 +200,6 @@ const HeroSection = () => {
 
           {/* Stats */}
           <div className="flex flex-col sm:flex-row justify-center items-center gap-8 py-10 px-4 text-center">
-            {/* Jobs */}
             <div className="flex flex-col items-center space-y-2">
               <div className="bg-[#00B34A] p-4 rounded-full">
                 <Briefcase className="text-white w-6 h-6" />
@@ -180,7 +210,6 @@ const HeroSection = () => {
               <p className="text-white text-sm">Jobs</p>
             </div>
 
-            {/* Candidates */}
             <div className="flex flex-col items-center space-y-2">
               <div className="bg-[#00B34A] p-4 rounded-full">
                 <Users className="text-white w-6 h-6" />
@@ -191,7 +220,6 @@ const HeroSection = () => {
               <p className="text-white text-sm">Candidates</p>
             </div>
 
-            {/* Companies */}
             <div className="flex flex-col items-center space-y-2">
               <div className="bg-[#00B34A] p-4 rounded-full">
                 <Building2 className="text-white w-6 h-6" />
@@ -205,7 +233,6 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Scrolling Company Logos */}
       <CompanyLogos />
     </div>
   );
