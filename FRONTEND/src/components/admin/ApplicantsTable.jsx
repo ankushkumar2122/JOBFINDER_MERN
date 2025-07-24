@@ -14,27 +14,31 @@ import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import axios from "axios";
 import { APPLICATION_API_END_POINT } from "@/utils/Constant";
+
 const shortlistingStatus = ["Accepted", "Rejected"];
+
 const ApplicantsTable = () => {
   const { applicants } = useSelector((store) => store.application);
+
   const statusHandler = async (status, id) => {
     try {
-      axios.defaults.withCredentials=true;
+      axios.defaults.withCredentials = true;
       const res = await axios.post(
         `${APPLICATION_API_END_POINT}/status/${id}/update`,
         { status },
         { withCredentials: true }
       );
-      if(res.data.success){
+      if (res.data.success) {
         toast.success(res.data.message);
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
+
   return (
-    <div>
-      <Table>
+    <div className="overflow-x-auto">
+      <Table className="min-w-full">
         <TableCaption>A List of your recent applied students</TableCaption>
         <TableHeader>
           <TableRow>
@@ -48,15 +52,15 @@ const ApplicantsTable = () => {
         </TableHeader>
         <TableBody>
           {applicants &&
-            applicants?.applications?.map((item) => (
-              <tr key={item._id}>
+            applicants.applications?.map((item) => (
+              <TableRow key={item._id} className="hover:bg-gray-50">
                 <TableCell>{item?.applicant?.fullname}</TableCell>
                 <TableCell>{item?.applicant?.email}</TableCell>
                 <TableCell>{item?.applicant?.phonenumber}</TableCell>
                 <TableCell>
                   {item.applicant?.profile?.resume ? (
                     <a
-                      className="text-blue-600 cursor-pointer"
+                      className="text-blue-600 underline hover:text-blue-800"
                       href={item?.applicant?.profile?.resume}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -68,25 +72,27 @@ const ApplicantsTable = () => {
                   )}
                 </TableCell>
                 <TableCell>
-                  {item?.applicant?.createdAt.split("T")[0]}
+                  {item?.applicant?.createdAt?.split("T")[0] || "N/A"}
                 </TableCell>
-                <TableCell className="float-right cursor-pointer">
+                <TableCell className="text-right">
                   <Popover>
                     <PopoverTrigger>
-                      <MoreHorizontal />
+                      <MoreHorizontal className="cursor-pointer" />
                     </PopoverTrigger>
                     <PopoverContent className="w-32 cursor-pointer">
-                      {shortlistingStatus.map((status, index) => {
-                        return (
-                          <div  onClick={()=>statusHandler(status,item?._id)} key={index}>
-                            <span>{status}</span>
-                          </div>
-                        );
-                      })}
+                      {shortlistingStatus.map((status, index) => (
+                        <div
+                          key={index}
+                          onClick={() => statusHandler(status, item?._id)}
+                          className="p-2 hover:bg-gray-100 rounded"
+                        >
+                          {status}
+                        </div>
+                      ))}
                     </PopoverContent>
                   </Popover>
                 </TableCell>
-              </tr>
+              </TableRow>
             ))}
         </TableBody>
       </Table>

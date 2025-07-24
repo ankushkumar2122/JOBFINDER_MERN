@@ -15,11 +15,10 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const CompaniesTable = () => {
-  const { companies, searchCompanyByText } = useSelector(
-    (store) => store.company
-  );
+  const { companies, searchCompanyByText } = useSelector((store) => store.company);
   const [filterCompany, setfilterCompany] = useState(companies);
   const navigate = useNavigate();
+
   useEffect(() => {
     const filteredCompany =
       companies.length >= 0 &&
@@ -33,9 +32,11 @@ const CompaniesTable = () => {
       });
     setfilterCompany(filteredCompany);
   }, [searchCompanyByText, companies]);
+
   return (
-    <div>
-      <Table>
+    // Wrapper div for horizontal scrolling on small devices
+    <div className="overflow-x-auto rounded-lg border border-gray-200">
+      <Table className="min-w-[600px]"> {/* minimum width so it can scroll on smaller screens */}
         <TableCaption>A list of your recent registered companies</TableCaption>
         <TableHeader>
           <TableRow>
@@ -48,10 +49,10 @@ const CompaniesTable = () => {
 
         <TableBody>
           {filterCompany?.map((company) => (
-           <TableRow key={company._id}>
+            <TableRow key={company._id}>
               <TableCell>
                 <Avatar>
-                  <AvatarImage src={company.logo} />
+                  <AvatarImage src={company.logo} alt={`${company.name} logo`} />
                 </Avatar>
               </TableCell>
               <TableCell>{company.name}</TableCell>
@@ -63,9 +64,7 @@ const CompaniesTable = () => {
                   </PopoverTrigger>
                   <PopoverContent>
                     <div
-                      onClick={() =>
-                        navigate(`/admin/companies/${company._id}`)
-                      }
+                      onClick={() => navigate(`/admin/companies/${company._id}`)}
                       className="flex items-center gap-2 w-fit cursor-pointer"
                     >
                       <Edit2 className="w-4" />
@@ -73,7 +72,7 @@ const CompaniesTable = () => {
                     </div>
                   </PopoverContent>
                 </Popover>
-              </TableCell> 
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

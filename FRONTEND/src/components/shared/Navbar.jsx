@@ -126,7 +126,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Link, useNavigate } from "react-router-dom";
-import { Briefcase, LogOut, Menu, User2, X } from "lucide-react";
+import { LogOut, Menu, User2, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { useDispatch, useSelector } from "react-redux";
@@ -261,7 +261,9 @@ const Navbar = () => {
                   </Avatar>
                   <div>
                     <h4 className="font-semibold">{user?.fullname}</h4>
-                    <p className="text-sm text-gray-600">{user?.profile?.bio}</p>
+                    <p className="text-sm text-gray-600">
+                      {user?.profile?.bio}
+                    </p>
                   </div>
                 </div>
                 <div className="mt-4 space-y-2">
@@ -315,48 +317,71 @@ const Navbar = () => {
 
             {/* Scrollable links container */}
             <nav className="flex-1 overflow-y-auto flex flex-col gap-4 p-4">
-              <Link
-                to="/"
-                className="hover:text-green-400"
-                onClick={() => setMenuOpen(false)}
-              >
-                Home
-              </Link>
-              <Link
-                to="/jobs"
-                className="hover:text-green-400"
-                onClick={() => setMenuOpen(false)}
-              >
-                Jobs
-              </Link>
-              <Link
-                to="/about"
-                className="hover:text-green-400"
-                onClick={() => setMenuOpen(false)}
-              >
-                About Us
-              </Link>
-              <Link
-                to="/contact"
-                className="hover:text-green-400"
-                onClick={() => setMenuOpen(false)}
-              >
-                Contact Us
-              </Link>
+              {!user || user.role === "student" ? (
+                <>
+                  <Link to="/" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Home</Link>
+                  <Link to="/jobs" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Jobs</Link>
+                  <Link to="/browse" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Browse</Link>
+                  <Link to="/about" onClick={() => setMenuOpen(false)} className="hover:text-green-400">About Us</Link>
+                  <Link to="/contact" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Contact Us</Link>
+                  {user?.role === "student" && (
+                    <Link to="/profile" onClick={() => setMenuOpen(false)} className="hover:text-green-400">
+                      View Profile
+                    </Link>
+                  )}
+                </>
+              ) : (
+                <>
+                  <Link to="/admin/companies" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Companies</Link>
+                  <Link to="/admin/jobs" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Jobs</Link>
+                </>
+              )}
             </nav>
 
-            {/* Auth Buttons sticky at bottom */}
+            {/* User Info + Auth Buttons */}
             <div className="p-4 border-t border-gray-700">
-              <Link to="/login" onClick={() => setMenuOpen(false)}>
-                <Button className="w-full bg-[#00B34A] text-white hover:bg-[#00B34A] mb-2">
-                  Login
-                </Button>
-              </Link>
-              <Link to="/signup" onClick={() => setMenuOpen(false)}>
-                <Button className="w-full bg-[#00B34A] text-white hover:bg-[#00B34A]">
-                  Signup
-                </Button>
-              </Link>
+              {!user ? (
+                <>
+                  <Link to="/login" onClick={() => setMenuOpen(false)}>
+                    <Button className="w-full bg-[#00B34A] text-white hover:bg-[#00B34A] mb-2">
+                      Login
+                    </Button>
+                  </Link>
+                  <Link to="/signup" onClick={() => setMenuOpen(false)}>
+                    <Button className="w-full bg-[#00B34A] text-white hover:bg-[#00B34A]">
+                      Signup
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center gap-3 mb-4">
+                    <Avatar className="w-10 h-10">
+                      <AvatarImage
+                        src={user?.profile?.profilePhoto}
+                        alt="user"
+                        className="rounded-full object-cover"
+                      />
+                    </Avatar>
+                    <div>
+                      <p className="text-sm font-semibold">{user?.fullname}</p>
+                      <p className="text-xs text-gray-400">
+                        {user?.profile?.bio || user?.email}
+                      </p>
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={() => {
+                      logoutHandler();
+                      setMenuOpen(false);
+                    }}
+                    className="w-full bg-red-600 text-white hover:bg-red-700"
+                  >
+                    Logout
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </>

@@ -10,25 +10,30 @@ import { searchCompanyByText } from "@/redux/CompanySlice";
 
 const Companies = () => {
   useGetAllCompanies();
-  const [input, setinput] = useState("");
-  const naavigate = useNavigate();
+  const [input, setInput] = useState("");
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(searchCompanyByText(input));
-  }, [input]);
+  }, [input, dispatch]);
+
   return (
     <div>
       <Navbar />
-      <div className=" max-w-6xl mx-auto my-10">
-        <div className="flex items-center justify-between my-5 ">
+      {/* Add padding top to push content below fixed navbar */}
+      <div className="max-w-6xl mx-auto my-10 px-4 pt-24 sm:pt-28">
+        {/* Responsive flex: stack on small screens */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 my-5">
           <Input
-            className="w-fit " 
+            className="w-full sm:w-auto"
             placeholder="Filter by Name"
-            onChange={(e) => setinput(e.target.value)}
+            onChange={(e) => setInput(e.target.value)}
+            value={input}
           />
           <Button
-            onClick={() => naavigate("/admin/companies/create")}
-            className=""
+            onClick={() => navigate("/admin/companies/create")}
+            className="w-full sm:w-auto"
           >
             New Company
           </Button>

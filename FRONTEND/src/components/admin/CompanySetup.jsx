@@ -13,7 +13,8 @@ import useGetCompanyById from "@/hooks/useGetCompanyById";
 
 const CompanySetup = () => {
   const params = useParams();
-  useGetCompanyById(params.id)
+  useGetCompanyById(params.id);
+
   const [input, setInput] = useState({
     name: "",
     description: "",
@@ -21,17 +22,21 @@ const CompanySetup = () => {
     location: "",
     file: null,
   });
+
   const { singleCompany } = useSelector((store) => store.company);
-  const [loading, setloding] = useState(false);
-  
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
+
   const changeFileHandler = (e) => {
     const file = e.target.files?.[0];
     setInput({ ...input, file });
   };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -44,14 +49,12 @@ const CompanySetup = () => {
     }
 
     try {
-      setloding(true);
+      setLoading(true);
       const res = await axios.put(
         `${COMPANY_API_END_POINT}/update/${params.id}`,
         formData,
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,
         }
       );
@@ -60,27 +63,28 @@ const CompanySetup = () => {
         navigate("/admin/companies");
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
+      console.error(error);
+      toast.error(error?.response?.data?.message || "Update failed");
     } finally {
-      setloding(false);
+      setLoading(false);
     }
   };
+
   useEffect(() => {
-     if (!singleCompany) return;
+    if (!singleCompany) return;
     setInput({
       name: singleCompany.name || "",
       description: singleCompany.description || "",
       website: singleCompany.website || "",
       location: singleCompany.location || "",
-       file: null, 
+      file: null,
     });
   }, [singleCompany]);
 
   return (
     <div>
       <Navbar />
-      <div className="max-w-xl mx-auto my-10">
+      <div className="pt-24 max-w-xl mx-auto my-10 px-4">
         <form onSubmit={submitHandler}>
           <div className="flex items-center gap-5 p-8">
             <Button
@@ -93,7 +97,8 @@ const CompanySetup = () => {
             </Button>
             <h1 className="font-bold text-xl">Company Setup</h1>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label>Company Name</Label>
               <Input
@@ -103,6 +108,7 @@ const CompanySetup = () => {
                 onChange={changeEventHandler}
               />
             </div>
+
             <div>
               <Label>Description</Label>
               <Input
@@ -112,6 +118,7 @@ const CompanySetup = () => {
                 onChange={changeEventHandler}
               />
             </div>
+
             <div>
               <Label>Website</Label>
               <Input
@@ -121,6 +128,7 @@ const CompanySetup = () => {
                 onChange={changeEventHandler}
               />
             </div>
+
             <div>
               <Label>Location</Label>
               <Input
@@ -130,22 +138,16 @@ const CompanySetup = () => {
                 onChange={changeEventHandler}
               />
             </div>
+
             <div>
               <Label>Logo</Label>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={changeFileHandler}
-              />
+              <Input type="file" accept="image/*" onChange={changeFileHandler} />
             </div>
           </div>
-          {/* <Button type="submit" className="w-full mt-8">
-            Update
-          </Button> */}
 
           {loading ? (
-            <Button className="w-full my-4 bg-[#00B34A]">
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait
+            <Button className="w-full my-4 bg-[#00B34A]" disabled>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
             </Button>
           ) : (
             <Button type="submit" className="w-full my-4 bg-[#00B34A]">
