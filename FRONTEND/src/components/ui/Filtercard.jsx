@@ -15,6 +15,7 @@ const filterData = [
       "Python Developer",
       "Data Analyst",
       "DevOps Engineer",
+        "Software Developer",
     ],
   },
   {
