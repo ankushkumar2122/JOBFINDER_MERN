@@ -128,12 +128,13 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { LogOut, Menu, User2, X } from "lucide-react";
 import { Button } from "../ui/button";
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/Constant";
 import { SetUser } from "@/redux/authslice";
+import NotificationBell from "../ui/NotificationBell";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -150,7 +151,7 @@ const Navbar = () => {
       if (res.data.success) {
         dispatch(SetUser(null));
         navigate("/");
-        toast.success(res.data.message);
+        toast.success(res.data.message || "Logged out successfully");
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Logout failed");
@@ -167,15 +168,15 @@ const Navbar = () => {
           </Link>
         </h1>
 
-        {/* Hamburger Icon */}
+        {/* Hamburger Icon for Mobile */}
         <div className="md:hidden">
           <button className="text-white" onClick={() => setMenuOpen(true)}>
             <Menu size={28} />
           </button>
         </div>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-12">
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center gap-8">
           <ul className="text-white flex font-medium items-center gap-5">
             {user && user.role === "recruiter" ? (
               <>
@@ -221,6 +222,10 @@ const Navbar = () => {
             )}
           </ul>
 
+          {/* **Notification Bell Add Here (Only if user is logged in)** */}
+          {user && <NotificationBell />}
+
+          {/* Auth Buttons or Profile */}
           {!user ? (
             <div className="flex items-center gap-2">
               <Link to="/login">
@@ -244,6 +249,9 @@ const Navbar = () => {
                     alt="Profile"
                     className="rounded-full object-cover"
                   />
+                  <AvatarFallback>
+                    {user?.fullname?.[0]?.toUpperCase() || "U"}
+                  </AvatarFallback>
                 </Avatar>
               </PopoverTrigger>
               <PopoverContent
@@ -258,11 +266,15 @@ const Navbar = () => {
                       alt="User"
                       className="rounded-full object-cover"
                     />
+                    <AvatarFallback>
+                      {user?.fullname?.[0]?.toUpperCase() || "U"}
+                    </AvatarFallback>
                   </Avatar>
+
                   <div>
                     <h4 className="font-semibold">{user?.fullname}</h4>
                     <p className="text-sm text-gray-600">
-                      {user?.profile?.bio}
+                      {user?.profile?.bio || user?.email}
                     </p>
                   </div>
                 </div>
@@ -294,16 +306,13 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* === Mobile Sidebar === */}
+      {/* Mobile Sidebar */}
       {menuOpen && (
         <>
-          {/* Overlay */}
           <div
             className="fixed inset-0 bg-black bg-opacity-60 z-40"
             onClick={() => setMenuOpen(false)}
           />
-
-          {/* Sidebar */}
           <div className="fixed top-0 left-0 h-full w-64 bg-black z-50 text-white shadow-lg flex flex-col">
             <div className="flex items-center justify-between px-4 py-4 border-b border-gray-700">
               <h2 className="text-xl font-bold text-green-500">JOB FINDER</h2>
@@ -315,30 +324,74 @@ const Navbar = () => {
               </button>
             </div>
 
-            {/* Scrollable links container */}
             <nav className="flex-1 overflow-y-auto flex flex-col gap-4 p-4">
               {!user || user.role === "student" ? (
                 <>
-                  <Link to="/" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Home</Link>
-                  <Link to="/jobs" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Jobs</Link>
-                  <Link to="/browse" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Browse</Link>
-                  <Link to="/about" onClick={() => setMenuOpen(false)} className="hover:text-green-400">About Us</Link>
-                  <Link to="/contact" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Contact Us</Link>
+                  <Link
+                    to="/"
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:text-green-400"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    to="/jobs"
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:text-green-400"
+                  >
+                    Jobs
+                  </Link>
+                  <Link
+                    to="/browse"
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:text-green-400"
+                  >
+                    Browse
+                  </Link>
+                  <Link
+                    to="/about"
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:text-green-400"
+                  >
+                    About Us
+                  </Link>
+                  <Link
+                    to="/contact"
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:text-green-400"
+                  >
+                    Contact Us
+                  </Link>
                   {user?.role === "student" && (
-                    <Link to="/profile" onClick={() => setMenuOpen(false)} className="hover:text-green-400">
+                    <Link
+                      to="/profile"
+                      onClick={() => setMenuOpen(false)}
+                      className="hover:text-green-400"
+                    >
                       View Profile
                     </Link>
                   )}
                 </>
               ) : (
                 <>
-                  <Link to="/admin/companies" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Companies</Link>
-                  <Link to="/admin/jobs" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Jobs</Link>
+                  <Link
+                    to="/admin/companies"
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:text-green-400"
+                  >
+                    Companies
+                  </Link>
+                  <Link
+                    to="/admin/jobs"
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:text-green-400"
+                  >
+                    Jobs
+                  </Link>
                 </>
               )}
             </nav>
 
-            {/* User Info + Auth Buttons */}
             <div className="p-4 border-t border-gray-700">
               {!user ? (
                 <>
@@ -362,6 +415,9 @@ const Navbar = () => {
                         alt="user"
                         className="rounded-full object-cover"
                       />
+                      <AvatarFallback>
+                        {user?.fullname?.[0]?.toUpperCase() || "U"}
+                      </AvatarFallback>
                     </Avatar>
                     <div>
                       <p className="text-sm font-semibold">{user?.fullname}</p>
@@ -370,7 +426,6 @@ const Navbar = () => {
                       </p>
                     </div>
                   </div>
-
                   <Button
                     onClick={() => {
                       logoutHandler();

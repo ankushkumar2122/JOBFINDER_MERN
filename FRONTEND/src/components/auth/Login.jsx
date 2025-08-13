@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, SetUser } from "@/redux/authslice";
 import { Loader2 } from "lucide-react";
+// import SignInWithGoogle from "./SignInWithGoogle";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -143,9 +144,11 @@ const Login = () => {
 
           <span className="text-sm block text-center">
             Don&apos;t have an account?{" "}
+           
             <Link to="/signup" className="text-[#00B34A] font-medium">
               Signup
             </Link>
+             {/* <SignInWithGoogle role={input.role}/> */}
           </span>
         </form>
       </div>

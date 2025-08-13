@@ -47,6 +47,7 @@ const ApplicantsTable = () => {
             <TableHead className="text-gray-700">Contact</TableHead>
             <TableHead className="text-gray-700">Resume</TableHead>
             <TableHead className="text-gray-700">Date</TableHead>
+            <TableHead className="text-gray-700">Status</TableHead>
             <TableHead className="text-gray-700 text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -74,17 +75,27 @@ const ApplicantsTable = () => {
                 <TableCell>
                   {item?.applicant?.createdAt?.split("T")[0] || "N/A"}
                 </TableCell>
+                <TableCell>
+                  {item?.status || "Pending"}
+                </TableCell>
                 <TableCell className="text-right">
                   <Popover>
                     <PopoverTrigger>
                       <MoreHorizontal className="cursor-pointer" />
                     </PopoverTrigger>
-                    <PopoverContent className="w-32 cursor-pointer">
+                    <PopoverContent className="w-32 cursor-pointer bg-white border border-gray-200 shadow-md rounded-md p-1">
                       {shortlistingStatus.map((status, index) => (
                         <div
                           key={index}
-                          onClick={() => statusHandler(status, item?._id)}
-                          className="p-2 hover:bg-gray-100 rounded"
+                          onClick={() => {
+                            if (item?.status === "Accepted") return; // disable if already accepted
+                            statusHandler(status, item?._id);
+                          }}
+                          className={`p-2 rounded ${
+                            item?.status === "Accepted"
+                              ? "text-gray-400 cursor-not-allowed"
+                              : "hover:bg-gray-100 text-gray-800"
+                          }`}
                         >
                           {status}
                         </div>

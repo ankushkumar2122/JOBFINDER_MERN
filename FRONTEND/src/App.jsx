@@ -26,6 +26,7 @@ import CompanySetup from "./components/admin/CompanySetup";
 import PostJob from "./components/admin/PostJob";
 import Applicants from "./components/admin/Applicants";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
+import ApplicationDetail from "./components/ui/ApplicationDetail";
 
 function App() {
   const dispatch = useDispatch();
@@ -63,6 +64,8 @@ function App() {
     { path: "/about", element: <About /> },
     { path: "/contact", element: <Contact /> },
     { path: "/profile", element: <Profile /> },
+      { path: "/applications/:id", element: <ApplicationDetail /> }, 
+
     //adimin ke liya
     { path: "/admin/companies", element: <ProtectedRoute><Companies /></ProtectedRoute>  },
      { path: "/admin/companies/create", element:<ProtectedRoute><CompanyCreate /></ProtectedRoute>  },
