@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { Badge } from "./badge";
 import {
   Table,
@@ -13,6 +14,19 @@ import {
 
 const AppliedJobTable = () => {
   const { allAppliedJobs } = useSelector((store) => store.job);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const highlightId = queryParams.get("highlight"); // ✅ applicationId aa jayega
+  const rowRefs = useRef({});
+
+  useEffect(() => {
+    if (highlightId && rowRefs.current[highlightId]) {
+      rowRefs.current[highlightId].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [highlightId]);
 
   return (
     <div className="overflow-x-auto">
@@ -35,7 +49,13 @@ const AppliedJobTable = () => {
             </TableRow>
           ) : (
             allAppliedJobs.map((appliedjob) => (
-              <TableRow key={appliedjob._id}>
+              <TableRow
+                key={appliedjob._id}
+                ref={(el) => (rowRefs.current[appliedjob._id] = el)}
+                className={`${
+                  highlightId === appliedjob._id ? "bg-yellow-100" : ""
+                }`}
+              >
                 <TableCell>{appliedjob?.createdAt?.split("T")[0]}</TableCell>
                 <TableCell>{appliedjob?.job?.title}</TableCell>
                 <TableCell>{appliedjob?.job?.company?.name}</TableCell>

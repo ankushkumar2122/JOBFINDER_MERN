@@ -43,23 +43,20 @@ export default function NotificationBell() {
   ).length;
 
   const handleNotificationClick = async (notification) => {
-    try {
-      await fetch(`${API_BASE}/api/notifications/${notification._id}/read`, {
-        method: "POST",
-        credentials: "include",
-      });
+  try {
+    // ✅ Mark as read
+    await fetch(`${API_BASE}/api/notifications/${notification._id}/read`, {
+      method: "POST",
+      credentials: "include",
+    });
 
-      setNotifications((prev) =>
-        prev.map((n) =>
-          n._id === notification._id ? { ...n, status: "read" } : n
-        )
-      );
+    // ✅ Redirect to profile with applicationId
+    window.location.href = `/profile?highlight=${notification.applicationId}`;
+  } catch (error) {
+    console.error("Error marking notification as read:", error);
+  }
+};
 
-      window.location.href = `/applications/${notification.applicationId}`;
-    } catch (error) {
-      console.error("Failed to mark notification as read", error);
-    }
-  };
 
   return (
     <div style={{ position: "relative", display: "inline-block" }}>

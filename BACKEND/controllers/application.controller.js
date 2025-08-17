@@ -156,6 +156,9 @@
 
 // module.exports = { applyJob, getAppliedJob, getApplicant, updatestatus };
 
+
+
+
 const Application = require("../models/Application.model");
 const Notification = require("../models/Notification.model");
 const Job = require("../models/job.model");
@@ -258,9 +261,9 @@ const updatestatus = async (req, res) => {
       return res.status(400).json({ message: "status is required", success: false });
     }
 
-    console.log("🔄 Updating application status...");
-    console.log("📌 Application ID:", applicationId);
-    console.log("📌 New Status:", status);
+    // console.log("🔄 Updating application status...");
+    // console.log("📌 Application ID:", applicationId);
+    // console.log("📌 New Status:", status);
 
     // Application + Job + Company + Applicant
     const application = await Application.findById(applicationId)
@@ -278,8 +281,8 @@ const updatestatus = async (req, res) => {
       return res.status(404).json({ message: "application not found", success: false });
     }
 
-    console.log("✅ Found application for user:", application?.applicant?.name);
-    console.log("🏢 Company:", application?.job?.company?.name);
+    // console.log("✅ Found application for user:", application?.applicant?.name);
+    // console.log("🏢 Company:", application?.job?.company?.name);
 
     // Company name
     const companyName = application?.job?.company?.name || "Unknown Company";
@@ -287,11 +290,11 @@ const updatestatus = async (req, res) => {
     // Application status update
     application.status = status.toLowerCase();
     await application.save();
-    console.log("✅ Application status updated to:", application.status);
+    // console.log("✅ Application status updated to:", application.status);
 
     // Notification
     const notificationMessage = `Your application for ${companyName} has been ${status}.`;
-    console.log("📢 Notification to send:", notificationMessage);
+    // console.log("📢 Notification to send:", notificationMessage);
 
     const notification = new Notification({
       userId: application.applicant._id,
@@ -301,7 +304,7 @@ const updatestatus = async (req, res) => {
     });
 
     await notification.save();
-    console.log("✅ Notification saved");
+    // console.log("✅ Notification saved");
 
     return res.status(200).json({
       message: "status updated and notification sent",
