@@ -26,6 +26,8 @@ import CompanySetup from "./components/admin/CompanySetup";
 import PostJob from "./components/admin/PostJob";
 import Applicants from "./components/admin/Applicants";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
+import PrivacyPolicy from "./components/ui/PrivacyPolicy";
+import TermsAndConditions from "./components/ui/TermsAndConditions";
 // import ApplicationDetail from "./components/ui/ApplicationDetail";
 
 function App() {
@@ -64,6 +66,8 @@ function App() {
     { path: "/about", element: <About /> },
     { path: "/contact", element: <Contact /> },
     { path: "/profile", element: <Profile /> },
+    { path: "/PrivacyPolicy", element: <PrivacyPolicy /> },
+    { path: "/Terms_Conditions", element: <TermsAndConditions /> },
       // { path: "/applications/:id", element: <ApplicationDetail /> }, 
 
     //adimin ke liya
