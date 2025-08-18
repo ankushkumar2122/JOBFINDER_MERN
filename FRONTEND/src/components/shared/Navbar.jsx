@@ -169,7 +169,8 @@ const Navbar = () => {
         </h1>
 
         {/* Hamburger Icon for Mobile */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-3">
+          {user && <NotificationBell />} {/* ✅ Show notification bell in mobile navbar */}
           <button className="text-white" onClick={() => setMenuOpen(true)}>
             <Menu size={28} />
           </button>
@@ -222,7 +223,7 @@ const Navbar = () => {
             )}
           </ul>
 
-          {/* **Notification Bell Add Here (Only if user is logged in)** */}
+          {/* ✅ Notification Bell (Desktop) */}
           {user && <NotificationBell />}
 
           {/* Auth Buttons or Profile */}
@@ -323,6 +324,13 @@ const Navbar = () => {
                 <X size={24} />
               </button>
             </div>
+
+            {/* ✅ Notification Bell inside Sidebar */}
+            {/* {user && (
+              <div className="px-4 py-3 border-b border-gray-700">
+                <NotificationBell />
+              </div>
+            )} */}
 
             <nav className="flex-1 overflow-y-auto flex flex-col gap-4 p-4">
               {!user || user.role === "student" ? (

@@ -33,7 +33,10 @@ const Profile = () => {
               </div>
             </div>
             <div className="mt-4 sm:mt-0">
-              <Button onClick={() => setOpen(true)} variant="outline">
+              <Button
+                onClick={() => setOpen(true)}
+                className="bg-white border border-gray-300 text-black hover:bg-white hover:text-black"
+              >
                 <Pen className="w-4 h-4 mr-2" />
                 Edit Profile
               </Button>

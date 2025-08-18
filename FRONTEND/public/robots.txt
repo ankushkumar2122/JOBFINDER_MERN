@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://jobfinder-sooty-nu.vercel.app/sitemap.xml
