@@ -17,16 +17,17 @@ const Browse = () => {
   return (
     <>
       <div>
-        <Navbar />
-        <div className="max-w-7xl mx-auto my-10">
-          <h1 className="font-bold text-xl my-10">
-            Search result ({allJobs.length}){" "}
-          </h1>
-          {allJobs.map((job) => {
-            return <Job key={job._id} job={job} />;
-          })}
-        </div>
-      </div>
+  <Navbar />
+  <div className="max-w-7xl mx-auto my-10 pt-20">
+    <h1 className="font-bold text-xl mb-10">
+      Search result ({allJobs.length})
+    </h1>
+    {allJobs.map((job) => {
+      return <Job key={job._id} job={job} />;
+    })}
+  </div>
+</div>
+
     </>
   );
 };
