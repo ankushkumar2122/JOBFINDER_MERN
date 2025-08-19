@@ -168,6 +168,8 @@ const Navbar = () => {
           </Link>
         </h1>
 
+
+
         {/* Hamburger Icon for Mobile */}
         <div className="md:hidden flex items-center gap-3">
           {user && <NotificationBell />} {/* ✅ Show notification bell in mobile navbar */}
