@@ -167,7 +167,10 @@ const PostJob = () => {
               {companies.length > 0 ? (
                 <>
                   <Label>Select Company</Label>
-                  <Select onValueChange={selectChangeHandler} className="w-full">
+                  <Select
+                    onValueChange={selectChangeHandler}
+                    className="w-full"
+                  >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select a company" />
                     </SelectTrigger>
@@ -177,6 +180,7 @@ const PostJob = () => {
                           <SelectItem
                             key={company._id}
                             value={company.name.toLowerCase()}
+                            className="bg-white focus:bg-gray-100 data-[state=checked]:bg-gray-200 data-[highlighted]:bg-green-200"
                           >
                             {company.name}
                           </SelectItem>
