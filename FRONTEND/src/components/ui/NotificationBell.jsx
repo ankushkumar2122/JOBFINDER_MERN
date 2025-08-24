@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 export default function NotificationBell() {
   const [notifications, setNotifications] = useState([]);
   const [open, setOpen] = useState(false);
 
-  // ✅ Use .env value for backend API base
+  // ✅ Track old IDs to detect new ones
+  const prevNotificationIds = useRef(new Set());
+
   const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+  const notificationSound = useRef(new Audio("/notification.mp3"));
 
   const fetchNotifications = async () => {
     try {
@@ -13,7 +16,6 @@ export default function NotificationBell() {
         credentials: "include",
       });
 
-      // Try to parse JSON safely
       const text = await res.text();
       let data;
       try {
@@ -23,7 +25,25 @@ export default function NotificationBell() {
       }
 
       if (data.success) {
-        setNotifications(data.notifications);
+        const newNotifications = data.notifications;
+
+        // ✅ Find only "truly new" notifications
+        const newOnes = newNotifications.filter(
+          (n) => !prevNotificationIds.current.has(n._id)
+        );
+
+        // ✅ Play sound ONLY if new notifications arrived
+        if (newOnes.length > 0 && prevNotificationIds.current.size > 0) {
+          notificationSound.current.play().catch((err) =>
+            console.warn("Autoplay blocked:", err)
+          );
+        }
+
+        // ✅ Update state + save IDs
+        setNotifications(newNotifications);
+        prevNotificationIds.current = new Set(
+          newNotifications.map((n) => n._id)
+        );
       }
     } catch (error) {
       console.error("Failed to fetch notifications:", error.message);
@@ -32,8 +52,6 @@ export default function NotificationBell() {
 
   useEffect(() => {
     fetchNotifications();
-
-    // ✅ Poll every 5 seconds
     const interval = setInterval(fetchNotifications, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -43,20 +61,16 @@ export default function NotificationBell() {
   ).length;
 
   const handleNotificationClick = async (notification) => {
-  try {
-    // ✅ Mark as read
-    await fetch(`${API_BASE}/api/notifications/${notification._id}/read`, {
-      method: "POST",
-      credentials: "include",
-    });
-
-    // ✅ Redirect to profile with applicationId
-    window.location.href = `/profile?highlight=${notification.applicationId}`;
-  } catch (error) {
-    console.error("Error marking notification as read:", error);
-  }
-};
-
+    try {
+      await fetch(`${API_BASE}/api/notifications/${notification._id}/read`, {
+        method: "POST",
+        credentials: "include",
+      });
+      window.location.href = `/profile?highlight=${notification.applicationId}`;
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+    }
+  };
 
   return (
     <div style={{ position: "relative", display: "inline-block" }}>
