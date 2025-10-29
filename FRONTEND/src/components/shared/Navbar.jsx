@@ -134,7 +134,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/Constant";
 import { SetUser } from "@/redux/authslice";
-import NotificationBell from "../ui/NotificationBell";
+// import NotificationBell from "../ui/NotificationBell";   // ✅ COMMENTED
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -168,11 +168,9 @@ const Navbar = () => {
           </Link>
         </h1>
 
-
-
-        {/* Hamburger Icon for Mobile */}
+        {/* Mobile Menu Icon */}
         <div className="md:hidden flex items-center gap-3">
-          {user && <NotificationBell />} {/* ✅ Show notification bell in mobile navbar */}
+          {/* {user && <NotificationBell />} */} {/* ✅ COMMENTED */}
           <button className="text-white" onClick={() => setMenuOpen(true)}>
             <Menu size={28} />
           </button>
@@ -196,37 +194,16 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <li>
-                  <Link to="/" className="hover:text-green-400">
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/jobs" className="hover:text-green-400">
-                    Jobs
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/browse" className="hover:text-green-400">
-                    Browse
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/about" className="hover:text-green-400">
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/contact" className="hover:text-green-400">
-                    Contact Us
-                  </Link>
-                </li>
+                <li><Link to="/" className="hover:text-green-400">Home</Link></li>
+                <li><Link to="/jobs" className="hover:text-green-400">Jobs</Link></li>
+                <li><Link to="/browse" className="hover:text-green-400">Browse</Link></li>
+                <li><Link to="/about" className="hover:text-green-400">About Us</Link></li>
+                <li><Link to="/contact" className="hover:text-green-400">Contact Us</Link></li>
               </>
             )}
           </ul>
 
-          {/* ✅ Notification Bell (Desktop) */}
-          {user && <NotificationBell />}
+          {/* {user && <NotificationBell />} */}  {/* ✅ COMMENTED */}
 
           {/* Auth Buttons or Profile */}
           {!user ? (
@@ -235,10 +212,7 @@ const Navbar = () => {
                 <Button variant="outline">Login</Button>
               </Link>
               <Link to="/signup">
-                <Button
-                  className="bg-[#00B34A] hover:bg-[#00B34A] text-white"
-                  variant="outline"
-                >
+                <Button className="bg-[#00B34A] hover:bg-[#00B34A] text-white" variant="outline">
                   Signup
                 </Button>
               </Link>
@@ -247,38 +221,20 @@ const Navbar = () => {
             <Popover>
               <PopoverTrigger asChild>
                 <Avatar className="w-10 h-10 cursor-pointer">
-                  <AvatarImage
-                    src={user?.profile?.profilePhoto}
-                    alt="Profile"
-                    className="rounded-full object-cover"
-                  />
-                  <AvatarFallback>
-                    {user?.fullname?.[0]?.toUpperCase() || "U"}
-                  </AvatarFallback>
+                  <AvatarImage src={user?.profile?.profilePhoto} alt="Profile" className="rounded-full object-cover" />
+                  <AvatarFallback>{user?.fullname?.[0]?.toUpperCase() || "U"}</AvatarFallback>
                 </Avatar>
               </PopoverTrigger>
-              <PopoverContent
-                side="bottom"
-                align="end"
-                className="w-64 bg-white text-black shadow-lg rounded-md p-4"
-              >
+              <PopoverContent side="bottom" align="end" className="w-64 bg-white text-black shadow-lg rounded-md p-4">
                 <div className="flex items-center gap-3">
                   <Avatar className="w-9 h-9">
-                    <AvatarImage
-                      src={user?.profile?.profilePhoto}
-                      alt="User"
-                      className="rounded-full object-cover"
-                    />
-                    <AvatarFallback>
-                      {user?.fullname?.[0]?.toUpperCase() || "U"}
-                    </AvatarFallback>
+                    <AvatarImage src={user?.profile?.profilePhoto} alt="User" className="rounded-full object-cover" />
+                    <AvatarFallback>{user?.fullname?.[0]?.toUpperCase() || "U"}</AvatarFallback>
                   </Avatar>
 
                   <div>
                     <h4 className="font-semibold">{user?.fullname}</h4>
-                    <p className="text-sm text-gray-600">
-                      {user?.profile?.bio || user?.email}
-                    </p>
+                    <p className="text-sm text-gray-600">{user?.profile?.bio || user?.email}</p>
                   </div>
                 </div>
                 <div className="mt-4 space-y-2">
@@ -286,19 +242,13 @@ const Navbar = () => {
                     <div className="flex items-center gap-2">
                       <User2 className="w-4 h-4" />
                       <Link to="/profile">
-                        <Button variant="link" className="p-0 text-black">
-                          View Profile
-                        </Button>
+                        <Button variant="link" className="p-0 text-black">View Profile</Button>
                       </Link>
                     </div>
                   )}
                   <div className="flex items-center gap-2">
                     <LogOut className="w-4 h-4" />
-                    <Button
-                      onClick={logoutHandler}
-                      variant="link"
-                      className="p-0 text-black"
-                    >
+                    <Button onClick={logoutHandler} variant="link" className="p-0 text-black">
                       Logout
                     </Button>
                   </div>
@@ -312,90 +262,41 @@ const Navbar = () => {
       {/* Mobile Sidebar */}
       {menuOpen && (
         <>
-          <div
-            className="fixed inset-0 bg-black bg-opacity-60 z-40"
-            onClick={() => setMenuOpen(false)}
-          />
+          <div className="fixed inset-0 bg-black bg-opacity-60 z-40" onClick={() => setMenuOpen(false)} />
           <div className="fixed top-0 left-0 h-full w-64 bg-black z-50 text-white shadow-lg flex flex-col">
             <div className="flex items-center justify-between px-4 py-4 border-b border-gray-700">
               <h2 className="text-xl font-bold text-green-500">JOB FINDER</h2>
-              <button
-                onClick={() => setMenuOpen(false)}
-                className="text-white focus:outline-none"
-              >
+              <button onClick={() => setMenuOpen(false)} className="text-white focus:outline-none">
                 <X size={24} />
               </button>
             </div>
 
-            {/* ✅ Notification Bell inside Sidebar */}
             {/* {user && (
               <div className="px-4 py-3 border-b border-gray-700">
                 <NotificationBell />
               </div>
-            )} */}
+            )} */} {/* ✅ COMMENTED */}
 
             <nav className="flex-1 overflow-y-auto flex flex-col gap-4 p-4">
               {!user || user.role === "student" ? (
                 <>
-                  <Link
-                    to="/"
-                    onClick={() => setMenuOpen(false)}
-                    className="hover:text-green-400"
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    to="/jobs"
-                    onClick={() => setMenuOpen(false)}
-                    className="hover:text-green-400"
-                  >
-                    Jobs
-                  </Link>
-                  <Link
-                    to="/browse"
-                    onClick={() => setMenuOpen(false)}
-                    className="hover:text-green-400"
-                  >
-                    Browse
-                  </Link>
-                  <Link
-                    to="/about"
-                    onClick={() => setMenuOpen(false)}
-                    className="hover:text-green-400"
-                  >
-                    About Us
-                  </Link>
-                  <Link
-                    to="/contact"
-                    onClick={() => setMenuOpen(false)}
-                    className="hover:text-green-400"
-                  >
-                    Contact Us
-                  </Link>
+                  <Link to="/" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Home</Link>
+                  <Link to="/jobs" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Jobs</Link>
+                  <Link to="/browse" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Browse</Link>
+                  <Link to="/about" onClick={() => setMenuOpen(false)} className="hover:text-green-400">About Us</Link>
+                  <Link to="/contact" onClick={() => setMenuOpen(false)} className="hover:text-green-400">Contact Us</Link>
                   {user?.role === "student" && (
-                    <Link
-                      to="/profile"
-                      onClick={() => setMenuOpen(false)}
-                      className="hover:text-green-400"
-                    >
+                    <Link to="/profile" onClick={() => setMenuOpen(false)} className="hover:text-green-400">
                       View Profile
                     </Link>
                   )}
                 </>
               ) : (
                 <>
-                  <Link
-                    to="/admin/companies"
-                    onClick={() => setMenuOpen(false)}
-                    className="hover:text-green-400"
-                  >
+                  <Link to="/admin/companies" onClick={() => setMenuOpen(false)} className="hover:text-green-400">
                     Companies
                   </Link>
-                  <Link
-                    to="/admin/jobs"
-                    onClick={() => setMenuOpen(false)}
-                    className="hover:text-green-400"
-                  >
+                  <Link to="/admin/jobs" onClick={() => setMenuOpen(false)} className="hover:text-green-400">
                     Jobs
                   </Link>
                 </>
@@ -420,20 +321,12 @@ const Navbar = () => {
                 <>
                   <div className="flex items-center gap-3 mb-4">
                     <Avatar className="w-10 h-10">
-                      <AvatarImage
-                        src={user?.profile?.profilePhoto}
-                        alt="user"
-                        className="rounded-full object-cover"
-                      />
-                      <AvatarFallback>
-                        {user?.fullname?.[0]?.toUpperCase() || "U"}
-                      </AvatarFallback>
+                      <AvatarImage src={user?.profile?.profilePhoto} alt="user" className="rounded-full object-cover" />
+                      <AvatarFallback>{user?.fullname?.[0]?.toUpperCase() || "U"}</AvatarFallback>
                     </Avatar>
                     <div>
                       <p className="text-sm font-semibold">{user?.fullname}</p>
-                      <p className="text-xs text-gray-400">
-                        {user?.profile?.bio || user?.email}
-                      </p>
+                      <p className="text-xs text-gray-400">{user?.profile?.bio || user?.email}</p>
                     </div>
                   </div>
                   <Button

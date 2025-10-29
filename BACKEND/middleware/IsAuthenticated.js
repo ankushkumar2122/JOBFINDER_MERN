@@ -11,7 +11,7 @@ const IsAuthenticated = (req, res, next) => {
     }
 
     // Verify the token using the secret key
-    const decode = JWT.verify(token, process.env.SECRET_KEY);
+    const decode = JWT.verify(token, process.env.SECRET_KEY);//Agar sab theek hai → decode me payload aata hai.
 
 
     //  console.log("Decoded Token:", token);

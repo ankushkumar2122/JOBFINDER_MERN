@@ -15,7 +15,7 @@ const register = async (req, res) => {
         .status(404)
         .json({ message: "somthing is mising", success: false });
     }
-    console.log("req.body is:", req.body);
+    // console.log("req.body is:", req.body);
     const file = req.file;
     const fileUri = getDataUri(file);
     const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
@@ -37,7 +37,7 @@ const register = async (req, res) => {
         profilePhoto: cloudResponse.secure_url,
       },
     });
-    console.log("req.body is:", req.body);
+    // console.log("req.body is:", req.body);
 
     return res
       .status(201)
@@ -76,7 +76,7 @@ const login = async (req, res) => {
         success: false,
       });
     }
-    //token generate karuga
+    //token generate karaga
     const tokenData = {
       userId: user._id,
     };
